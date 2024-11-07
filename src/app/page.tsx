@@ -18,7 +18,7 @@ export default function Home() {
         </h1>
         <p className="text-center text-xl leading-6 text-slate-400">
           Estamos quase prontos! Nosso site estará disponível em breve. <br />
-          Fique ligado!
+          Fique ligado! Testando deploy
         </p>
       </div>
     </div>
