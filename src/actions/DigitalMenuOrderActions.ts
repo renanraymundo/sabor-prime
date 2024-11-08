@@ -1,33 +1,8 @@
 'use server'
 
-import { $Enums, Prisma } from '@prisma/client'
+import { Order, OrderItem, Prisma } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
-
-type OrderItem = {
-  id: string
-  title: string
-  createdAt: Date
-  updatedAt: Date
-  price: number
-  quantity: number
-  orderId: string
-  totalPrice: number
-}
-
-type Order = {
-  name: string
-  id: string
-  protocolNumber: string
-  whatsapp: string
-  address: string
-  complement: string | null
-  city: string
-  state: string
-  status: $Enums.OrderStatus
-  createdAt: Date
-  updatedAt: Date
-}
 
 export type CreateOrderSchema = {
   protocolNumber: string
