@@ -13,6 +13,9 @@ type DashboardPageItemProps = {
   title: string
   quantity: number
 }
+
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const digitalMenus = await getDigitalMenus()
   const orders = await getOrders()
