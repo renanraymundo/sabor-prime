@@ -1,10 +1,10 @@
 'use server'
 
-// import { Line } from '@prisma/client'
+import { Line } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
 
-export async function getLines() {
+export async function getLines(): Promise<Line[]> {
   try {
     const lines = await prisma.line.findMany()
 
@@ -15,7 +15,7 @@ export async function getLines() {
   }
 }
 
-export async function getLineById(id: string) {
+export async function getLineById(id: string): Promise<Line | null> {
   try {
     const line = await prisma.line.findUnique({
       where: {
