@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String?
+  email        String?       @unique
+  passwordHash String        @map("password_hash")
+  accounts     Account[]
+  sessions     Session[]
+  digitalMenus DigitalMenu[]
+
+  @@map("users")
+}
+
+model DigitalMenu {
+  id       String            @id @default(cuid())
+  photo    String
+  title    String
+  price    Float
+  quantity Int
+  calories Int
+  stock    Int
+  status   DigitalMenuStatus
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  lineId String? @map("line_id")
+  line   Line?   @relation("LineToDigitalMenus", fields: [lineId], references: [id])
+
+  @@map("digital_menus")
+}
+
+model Line {
+  id    String @id @default(cuid())
+  title String
+
+  digitalMenus DigitalMenu[] @relation("LineToDigitalMenus")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+
+  @@map("lines")
+}
+
+model Order {
+  id             String      @id @default(cuid())
+  protocolNumber String      @map("protocol_number")
+  name           String
+  whatsapp       String
+  address        String
+  complement     String?
+  city           String
+  state          String
+  items          OrderItem[]
+
+  status OrderStatus @default(INPROCESS)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id         String @id @default(cuid())
+  orderId    String @map("order_id")
+  order      Order  @relation(fields: [orderId], references: [id])
+  title      String
+  quantity   Int
+  price      Float
+  totalPrice Float  @map("total_price")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("order_items")
+}
+
+enum DigitalMenuStatus {
+  ACTIVATED
+  DEACTIVATED
+}
+
+enum OrderStatus {
+  CANCELLED
+  INPROCESS
+  COMPLETED
+}
