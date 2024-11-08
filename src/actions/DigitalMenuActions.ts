@@ -2,6 +2,13 @@
 
 import { prisma } from '@/lib/prisma'
 
+type MenuItem = {
+  id: string
+  photo: string
+  title: string
+  price: number
+}
+
 export async function getDigitalMenusByIds(
   digitalMenuIds: string[],
 ): Promise<Record<string, { photo: string; title: string; price: number }>> {
@@ -19,8 +26,10 @@ export async function getDigitalMenusByIds(
     })
 
     return digitalMenus.reduce(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (acc: any, menu: any) => {
+      (
+        acc: Record<string, { photo: string; title: string; price: number }>,
+        menu: MenuItem,
+      ) => {
         acc[menu.id] = {
           photo: menu.photo,
           title: menu.title,
