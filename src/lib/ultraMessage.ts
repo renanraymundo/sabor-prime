@@ -42,14 +42,14 @@ export async function ultraMessage(
   const finalOutput = itemsList.join('\n')
 
   const response = await fetch(
-    `https://api.ultramsg.com/${process.env.NEXT_PUBLIC_WHATSAPP_MESSAGE_INSTANCE_ID}/messages/chat`,
+    `https://api.ultramsg.com/${process.env.WHATSAPP_MESSAGE_INSTANCE_ID}/messages/chat`,
     {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        token: process.env.NEXT_PUBLIC_WHATSAPP_TOKEN,
+        token: process.env.WHATSAPP_TOKEN,
         to,
         body: owner
           ? `*NOVO KIT SOLICITADO:*\n\n*Protocolo de atendimento:* ${protocolNumber}\n*Nome do cliente:* ${name}\n*WhatsApp do cliente:* ${whatsApp}\n\n*PEDIDO DO CLIENTE:*\n\n${finalOutput}\n*~SUBTOTAL:~* R$ ${subTotalPriceSum?.toFixed(2).replace('.', ',')}`

@@ -39,12 +39,12 @@ export function Sidebar() {
       id: '1',
       icon: MdOutlineRestaurantMenu,
       name: 'Cardápio Digital',
-      path: '',
+      path: 'menu',
       items: [
         {
           id: '0',
           name: 'Todos os itens',
-          path: '/dashboard/menu/itens',
+          path: '/dashboard/menu/items',
         },
         {
           id: '1',
@@ -57,12 +57,12 @@ export function Sidebar() {
       id: '2',
       icon: MdOutlineCategory,
       name: 'Linhas',
-      path: '',
+      path: 'lines',
       items: [
         {
           id: '0',
           name: 'Todas as linhas',
-          path: '/dashboard/lines',
+          path: '/dashboard/lines/items',
         },
         {
           id: '1',
