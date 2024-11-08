@@ -1,6 +1,8 @@
 import { getOrders } from '@/actions/DigitalMenuOrderActions'
 import { DigitalMenuOrdersTable } from '@/components/admin/DigitalMenuOrdersTable'
 
+export const dynamic = 'force-dynamic'
+
 export default async function OrdersPage() {
   const orders = await getOrders()
 

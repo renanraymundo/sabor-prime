@@ -1,5 +1,7 @@
 import { DigitalMenuCreateForm } from '@/components/admin/DigitalMenuCreateForm'
 
-export default async function DigitalMenuCreatePage() {
+export const dynamic = 'force-dynamic'
+
+export default function DigitalMenuCreatePage() {
   return <DigitalMenuCreateForm />
 }
