@@ -5,6 +5,8 @@ import { Bebas_Neue, Dancing_Script } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
 
+import Providers from './providers'
+
 const bebasNeue = Bebas_Neue({
   subsets: ['latin'],
   variable: '--font-bebas-neue',
@@ -17,7 +19,7 @@ const dancingScript = Dancing_Script({
 })
 
 export const metadata: Metadata = {
-  title: 'Sabor Prime | Saudavelmente saboroso!',
+  title: 'Saudavelmente Saboroso | Sabor Prime',
 }
 
 export default function RootLayout({
@@ -26,15 +28,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body
         className={cn(
           bebasNeue.variable,
           dancingScript.variable,
-          'bg-white font-bebas-neue antialiased',
+          'bg-white font-bebas-neue text-slate-400 antialiased light',
         )}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
