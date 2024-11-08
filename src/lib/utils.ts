@@ -56,11 +56,17 @@ export function setAdminPageTitle(pathname: string) {
     case '/dashboard':
       return 'Dashboard'
 
-    case '/dashboard/menu/itens':
+    case '/dashboard/menu/items':
       return 'Todos os itens'
 
-    case '/dashboard/lines':
+    case '/dashboard/menu/create':
+      return 'Adicionar novo'
+
+    case '/dashboard/lines/items':
       return 'Todas as linhas'
+
+    case '/dashboard/lines/create':
+      return 'Adicionar nova'
 
     case '/dashboard/orders':
       return 'Todos os pedidos'
@@ -68,18 +74,4 @@ export function setAdminPageTitle(pathname: string) {
     default:
       return null
   }
-}
-
-export function setAdminBreadcrumbs(pathname: string) {
-  const items = pathname
-    .split('/')
-    .filter(Boolean)
-    .map((item) => {
-      if (item === 'menu') return 'Cardápio Digital'
-      if (item === 'itens') return 'Todos os itens'
-      if (item === 'lines') return 'Todas as linhas'
-      if (item === 'orders') return 'Todos os pedidos'
-      return item
-    })
-  return items
 }
