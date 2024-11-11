@@ -11,7 +11,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <section className="flex-1">
         <TopNav />
         <div className="p-4">
-          <DashboardTitle /> {children}
+          <DashboardTitle />
+          {children}
         </div>
       </section>
     </main>

@@ -1,5 +1,11 @@
+import { Metadata } from 'next'
+
 import { getDigitalMenus } from '@/actions/DigitalMenuActions'
 import { DigitalMenuTable } from '@/components/admin/DigitalMenuTable'
+
+export const metadata: Metadata = {
+  title: 'Todos os itens - Dashboard | Sabor Prime',
+}
 
 export const dynamic = 'force-dynamic'
 

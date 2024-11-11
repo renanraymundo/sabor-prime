@@ -1,3 +1,4 @@
+import { Metadata } from 'next'
 import { IconType } from 'react-icons'
 import { FiBook } from 'react-icons/fi'
 import { MdOutlineCategory, MdOutlineRestaurantMenu } from 'react-icons/md'
@@ -12,6 +13,10 @@ type DashboardPageItemProps = {
   icon: IconType
   title: string
   quantity: number
+}
+
+export const metadata: Metadata = {
+  title: 'Dashboard | Sabor Prime',
 }
 
 export const dynamic = 'force-dynamic'

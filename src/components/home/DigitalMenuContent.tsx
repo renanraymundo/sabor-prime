@@ -25,11 +25,11 @@ type DigitalMenuContentProps = {
 function groupItemsByLine(items: DigitalMenuContentItemProps[]) {
   const groupedItems: Record<string, DigitalMenuContentItemProps[]> = {}
   items.forEach((item) => {
-    const categoryTitle = item.line?.title || 'Sem Linha'
-    if (!groupedItems[categoryTitle]) {
-      groupedItems[categoryTitle] = []
+    const lineTitle = item.line?.title || 'Sem Linha'
+    if (!groupedItems[lineTitle]) {
+      groupedItems[lineTitle] = []
     }
-    groupedItems[categoryTitle].push(item)
+    groupedItems[lineTitle].push(item)
   })
   return groupedItems
 }
@@ -49,9 +49,9 @@ export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
         tabList: 'max-xs:flex-col max-xs:w-full mx-auto !mb-4',
       }}
     >
-      {Object.entries(groupedItems).map(([categoryTitle, categoryItems]) => {
+      {Object.entries(groupedItems).map(([lineTitle, categoryItems]) => {
         return (
-          <Tab key={categoryTitle} title={`${categoryTitle} (320g)`}>
+          <Tab key={lineTitle} title={`Linha ${lineTitle} (320g)`}>
             <div className="grid gap-3 lg:grid-cols-2">
               {categoryItems.map((menu) => {
                 return (

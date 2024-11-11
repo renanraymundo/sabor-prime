@@ -88,15 +88,16 @@ export function DigitalMenuCreateForm() {
   }
 
   async function onSubmit(data: DigitalMenuSchema) {
-    const response = await createDigitalMenu({
+    const result = await createDigitalMenu({
       ...data,
       photo: photoURL || '',
     })
+    console.log('DATA HERE', result)
 
-    if (response.status === 'success') {
-      router.push(`/dashboard/menu/${response.data.id}`)
+    if (result.status === 'success') {
+      router.push(`/dashboard/menu/${result.data.id}`)
     } else {
-      toast.error(response.error as string, {
+      toast.error(result.error as string, {
         icon: <LuShieldAlert size={18} />,
         action: (
           <FiX
@@ -114,7 +115,7 @@ export function DigitalMenuCreateForm() {
     }
   }
 
-  if (!isLine) return
+  if (!isLine) return <div>Carregando...</div>
 
   return (
     <form
@@ -128,24 +129,21 @@ export function DigitalMenuCreateForm() {
               <PhotoUploadButton
                 removePhoto={handleRemovePhoto}
                 className={
-                  errors.photo?.message && photoURL === ''
+                  errors.photo?.message && !photoURL
                     ? 'border-2 border-danger'
                     : ''
                 }
                 onUploadImage={onAddPhoto}
-                photoURL={photoURL as string}
+                photoURL={photoURL ?? ''}
               />
               {errors.photo?.message && photoURL === '' ? (
                 <span className="text-xs text-danger">
                   <ErrorMessage message={errors.photo?.message} />
                 </span>
-              ) : (
-                ''
-              )}
+              ) : null}
             </div>
             <input
               type="hidden"
-              value={photoURL as string}
               {...register('photo', {
                 onChange: handlePhotoChange,
               })}
@@ -160,6 +158,7 @@ export function DigitalMenuCreateForm() {
               size="sm"
               variant="bordered"
               color="primary"
+              className="mb-2"
               classNames={{
                 input:
                   'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
@@ -167,7 +166,11 @@ export function DigitalMenuCreateForm() {
               onClear={() => console.log('input cleared')}
               {...register('title')}
               isInvalid={!!errors.title}
-              errorMessage={<ErrorMessage message={errors.title?.message} />}
+              errorMessage={
+                errors.title?.message ? (
+                  <ErrorMessage message={errors.title.message} />
+                ) : null
+              }
             />
 
             <div className="grid grid-cols-4 gap-2">
@@ -188,7 +191,11 @@ export function DigitalMenuCreateForm() {
                 onClear={() => console.log('input cleared')}
                 {...register('price')}
                 isInvalid={!!errors.price}
-                errorMessage={<ErrorMessage message={errors.price?.message} />}
+                errorMessage={
+                  errors.price?.message ? (
+                    <ErrorMessage message={errors.price.message} />
+                  ) : null
+                }
               />
 
               <Input
@@ -209,7 +216,9 @@ export function DigitalMenuCreateForm() {
                 {...register('quantity')}
                 isInvalid={!!errors.quantity}
                 errorMessage={
-                  <ErrorMessage message={errors.quantity?.message} />
+                  errors.quantity?.message ? (
+                    <ErrorMessage message={errors.quantity.message} />
+                  ) : null
                 }
               />
 
@@ -231,7 +240,9 @@ export function DigitalMenuCreateForm() {
                 {...register('calories')}
                 isInvalid={!!errors.calories}
                 errorMessage={
-                  <ErrorMessage message={errors.calories?.message} />
+                  errors.calories?.message ? (
+                    <ErrorMessage message={errors.calories.message} />
+                  ) : null
                 }
               />
 
@@ -252,7 +263,11 @@ export function DigitalMenuCreateForm() {
                 onClear={() => console.log('input cleared')}
                 {...register('stock')}
                 isInvalid={!!errors.stock}
-                errorMessage={<ErrorMessage message={errors.stock?.message} />}
+                errorMessage={
+                  errors.stock?.message ? (
+                    <ErrorMessage message={errors.stock.message} />
+                  ) : null
+                }
               />
             </div>
           </>
@@ -280,9 +295,13 @@ export function DigitalMenuCreateForm() {
             }}
             label="Status"
             placeholder="Selecionar status"
-            className="max-w-xs"
+            className="mb-2 max-w-xs"
             isInvalid={!!errors.status}
-            errorMessage={<ErrorMessage message={errors.status?.message} />}
+            errorMessage={
+              errors.status?.message ? (
+                <ErrorMessage message={errors.status.message} />
+              ) : null
+            }
           >
             {statuses.map((status) => (
               <SelectItem key={status.key} color="secondary" value={status.key}>
@@ -290,7 +309,6 @@ export function DigitalMenuCreateForm() {
               </SelectItem>
             ))}
           </Select>
-
           <Select
             isRequired
             color="primary"
@@ -310,7 +328,11 @@ export function DigitalMenuCreateForm() {
                 }),
             })}
             isInvalid={!!errors.lineId}
-            errorMessage={<ErrorMessage message={errors.lineId?.message} />}
+            errorMessage={
+              errors.lineId?.message ? (
+                <ErrorMessage message={errors.lineId.message} />
+              ) : null
+            }
           >
             {isLine.map((line) => (
               <SelectItem key={line.id} color="secondary">
