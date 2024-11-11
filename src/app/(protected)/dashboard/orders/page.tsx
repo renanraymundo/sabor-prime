@@ -1,5 +1,11 @@
+import { Metadata } from 'next'
+
 import { getOrders } from '@/actions/DigitalMenuOrderActions'
 import { DigitalMenuOrdersTable } from '@/components/admin/DigitalMenuOrdersTable'
+
+export const metadata: Metadata = {
+  title: 'Pedidos - Dashboard | Sabor Prime',
+}
 
 export const dynamic = 'force-dynamic'
 
