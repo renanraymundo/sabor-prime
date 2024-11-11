@@ -10,7 +10,6 @@ import { LuShieldAlert } from 'react-icons/lu'
 import { toast } from 'sonner'
 
 import { signInUser } from '@/actions/authActions'
-import { sleep } from '@/lib/utils'
 import { AuthSchema, authSchema } from '@/schemas/AuthSchema'
 
 import { ErrorMessage } from './ErrorMessage'
@@ -32,7 +31,6 @@ export function AuthForm() {
   })
 
   async function onSubmit(data: AuthSchema) {
-    await sleep(3000)
     const result = await signInUser(data)
     if (result.status === 'success') {
       router.push('/dashboard')

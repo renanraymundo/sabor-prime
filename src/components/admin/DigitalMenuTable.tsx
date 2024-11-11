@@ -2,6 +2,7 @@
 
 import {
   Image,
+  Link,
   Table,
   TableBody,
   TableCell,
@@ -11,16 +12,45 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { DigitalMenu } from '@prisma/client'
-import Link from 'next/link'
-import { FiEdit, FiTrash } from 'react-icons/fi'
+import { useEffect, useState } from 'react'
+// import Link from 'next/link'
+// import { useEffect, useState } from 'react'
+import { FiEdit } from 'react-icons/fi'
 
+import { getLineById } from '@/actions/DigitalMenuLineActions'
+
+import { DigitalMenuDelete } from './DigitalMenuDelete'
 import { DigitalMenuPriceTable } from './DigitalMenuPriceTable'
 import { DigitalMenuStatus } from './DIgitalMenuStatus'
 
 type DigitalMenuTableProps = {
   digitalMenu: DigitalMenu[]
 }
+
+type LineProps = {
+  id: string
+  title: string
+}
 export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
+  const [lineData, setLineData] = useState<{
+    [key: string]: LineProps | undefined
+  }>({})
+
+  useEffect(() => {
+    const fetchLineData = async () => {
+      const data: { [key: string]: LineProps | undefined } = {}
+      for (const item of digitalMenu) {
+        if (item.lineId) {
+          const line = await getLineById(item.lineId)
+          if (line) data[item.lineId] = line
+        }
+      }
+      setLineData(data)
+    }
+
+    fetchLineData()
+  }, [digitalMenu])
+
   return (
     <Table
       aria-label="Tabla de items"
@@ -36,6 +66,7 @@ export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
         <TableColumn>Calorias</TableColumn>
         <TableColumn>Estoque</TableColumn>
         <TableColumn>Status</TableColumn>
+        <TableColumn>Linha</TableColumn>
         <TableColumn>Ações</TableColumn>
       </TableHeader>
       <TableBody>
@@ -58,6 +89,7 @@ export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
             <TableCell>
               <DigitalMenuStatus status={item.status} />
             </TableCell>
+            <TableCell>{lineData[item.lineId || '']?.title || ''}</TableCell>
             <TableCell>
               <div className="relative flex items-center gap-2">
                 <Tooltip
@@ -69,11 +101,8 @@ export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
                     <FiEdit size={16} className="text-success" />
                   </Link>
                 </Tooltip>
-                <Tooltip color="danger" content="Deletar item">
-                  <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                    <FiTrash />
-                  </span>
-                </Tooltip>
+
+                <DigitalMenuDelete id={item.id} />
               </div>
             </TableCell>
           </TableRow>

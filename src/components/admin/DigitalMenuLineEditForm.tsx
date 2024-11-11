@@ -1,12 +1,17 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Card, CardBody, Input } from '@nextui-org/react'
+import { Button, Card, CardBody, colors, Input } from '@nextui-org/react'
 import { Line } from '@prisma/client'
+import { usePathname, useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { FiX } from 'react-icons/fi'
+import { LuShieldAlert } from 'react-icons/lu'
+import { toast } from 'sonner'
 
+import { updateLine } from '@/actions/DigitalMenuLineActions'
 import { ErrorMessage } from '@/components/ErrorMessage'
-import { sleep } from '@/lib/utils'
+import { getIdByParams } from '@/lib/utils'
 import {
   DigitalMenuLineSchema,
   digitalMenuLineSchema,
@@ -19,6 +24,10 @@ type DigitalMenuLineEditFormProps = {
 export function DigitalMenuLineEditForm({
   line,
 }: DigitalMenuLineEditFormProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const lineId = getIdByParams(pathname)
   const {
     register,
     handleSubmit,
@@ -29,8 +38,42 @@ export function DigitalMenuLineEditForm({
   })
 
   async function onSubmit(data: DigitalMenuLineSchema) {
-    await sleep(3000)
-    console.log(data)
+    const result = await updateLine(lineId, data)
+
+    if (result.status === 'success') {
+      toast.error('Linha atualizada com sucesso.', {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="text-sucess ml-auto cursor-pointer"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.success[500],
+          border: colors.light.success[500],
+          color: colors.white,
+        },
+      })
+      router.refresh()
+    } else {
+      toast.error(result.error as string, {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="ml-auto cursor-pointer text-danger"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.danger[500],
+          border: colors.light.danger[500],
+          color: colors.white,
+        },
+      })
+    }
   }
 
   return (
