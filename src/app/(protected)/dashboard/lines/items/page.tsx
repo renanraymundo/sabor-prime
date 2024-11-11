@@ -1,10 +1,10 @@
-import { getDigitalMenus } from '@/actions/DigitalMenuActions'
-import { DigitalMenuTable } from '@/components/admin/DigitalMenuTable'
+import { getLines } from '@/actions/DigitalMenuLineActions'
+import { DigitalMenuLinesTable } from '@/components/admin/DigitalMenuLinesTable'
 
 export const dynamic = 'force-dynamic'
 
 export default async function MenuAllPage() {
-  const digitalMenus = await getDigitalMenus()
+  const lines = await getLines()
 
-  return <DigitalMenuTable digitalMenu={digitalMenus} />
+  return <DigitalMenuLinesTable lines={lines} />
 }

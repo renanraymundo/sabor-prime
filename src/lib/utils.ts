@@ -75,3 +75,20 @@ export function setAdminPageTitle(pathname: string) {
       return null
   }
 }
+
+export function generateSlug(title: string): string {
+  return title
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+}
+
+export function getIdByParams(pathname: string) {
+  const arr = pathname.split('/')
+  const lastItem = arr[arr.length - 1]
+  return lastItem
+}

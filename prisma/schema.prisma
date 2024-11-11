@@ -46,6 +46,7 @@ model User {
   accounts     Account[]
   sessions     Session[]
   digitalMenus DigitalMenu[]
+  lines        Line[]
 
   @@map("users")
 }
@@ -75,6 +76,10 @@ model DigitalMenu {
 model Line {
   id    String @id @default(cuid())
   title String
+  slug  String @unique
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   digitalMenus DigitalMenu[] @relation("LineToDigitalMenus")
   createdAt    DateTime      @default(now()) @map("created_at")

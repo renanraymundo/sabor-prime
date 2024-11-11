@@ -1,17 +1,22 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Card, CardBody, Input } from '@nextui-org/react'
+import { Button, Card, CardBody, colors, Input } from '@nextui-org/react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { FiX } from 'react-icons/fi'
+import { LuShieldAlert } from 'react-icons/lu'
+import { toast } from 'sonner'
 
+import { createLine } from '@/actions/DigitalMenuLineActions'
 import { ErrorMessage } from '@/components/ErrorMessage'
-import { sleep } from '@/lib/utils'
 import {
   DigitalMenuLineSchema,
   digitalMenuLineSchema,
 } from '@/schemas/DigitalMenuLineSchema'
 
 export function DigitalMenuLineCreateForm() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -22,8 +27,28 @@ export function DigitalMenuLineCreateForm() {
   })
 
   async function onSubmit(data: DigitalMenuLineSchema) {
-    await sleep(3000)
-    console.log(data)
+    const result = await createLine(data)
+
+    if (result.status === 'success') {
+      router.push('/dashboard/lines/items')
+      router.refresh()
+    } else {
+      toast.error(result.error as string, {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="ml-auto cursor-pointer text-danger"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.danger[500],
+          border: colors.light.danger[500],
+          color: colors.white,
+        },
+      })
+    }
   }
 
   return (

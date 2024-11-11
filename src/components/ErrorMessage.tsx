@@ -7,7 +7,7 @@ type ErrorMessageProps = {
 export function ErrorMessage({ message }: ErrorMessageProps) {
   return (
     <p className="flex items-center gap-1">
-      <MdErrorOutline size={14} className="flex-none" /> {message}
+      <MdErrorOutline size={14} className="flex-none text-danger" /> {message}
     </p>
   )
 }

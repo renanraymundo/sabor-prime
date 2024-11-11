@@ -6,26 +6,41 @@ import {
   Card,
   CardBody,
   CardHeader,
+  colors,
   Input,
   Select,
   SelectItem,
   Textarea,
 } from '@nextui-org/react'
-import { DigitalMenu } from '@prisma/client'
+import { DigitalMenu, Line } from '@prisma/client'
+import { usePathname, useRouter } from 'next/navigation'
+import { CloudinaryUploadWidgetResults } from 'next-cloudinary'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { FiX } from 'react-icons/fi'
+import { LuShieldAlert } from 'react-icons/lu'
+import { toast } from 'sonner'
 
+import { updateDigitalMenu } from '@/actions/DigitalMenuActions'
+import { getLines } from '@/actions/DigitalMenuLineActions'
 import { ErrorMessage } from '@/components/ErrorMessage'
-import { sleep } from '@/lib/utils'
+import { getIdByParams } from '@/lib/utils'
 import {
-  CreateDigitalMenuSchema,
-  createDigitalMenuSchema,
+  DigitalMenuSchema,
+  digitalMenuSchema,
 } from '@/schemas/DigitalMenuSchema'
+
+import { PhotoUploadButton } from '../PhotoUploadButton'
 
 type DigitalMenuEditFormProps = {
   digitalMenu: DigitalMenu
 }
 
 export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
+  const [isLine, setIsLine] = useState<Line[]>()
+  const [photoURL, setPhotoURL] = useState<string | null>(digitalMenu.photo)
+  const router = useRouter()
+  const pathname = usePathname()
   const statuses = [
     { key: 'ACTIVATED', label: 'Ativado' },
     { key: 'DEACTIVATED', label: 'Desativado' },
@@ -34,16 +49,91 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
   const {
     register,
     handleSubmit,
+    setValue,
+    trigger,
     formState: { errors, isValid, isSubmitting, isDirty },
-  } = useForm<CreateDigitalMenuSchema>({
-    resolver: zodResolver(createDigitalMenuSchema),
+  } = useForm<DigitalMenuSchema>({
+    resolver: zodResolver(digitalMenuSchema),
     mode: 'onTouched',
   })
 
-  async function onSubmit(data: CreateDigitalMenuSchema) {
-    await sleep(3000)
-    console.log(data)
+  const digitalMenuId = getIdByParams(pathname)
+
+  useEffect(() => {
+    const lineFetch = async () => {
+      const lineFetched = await getLines()
+      setIsLine(lineFetched)
+    }
+
+    lineFetch()
+  }, [])
+
+  async function onAddPhoto(result: CloudinaryUploadWidgetResults) {
+    if (result.info && typeof result.info === 'object') {
+      const secureUrl = result.info.secure_url
+
+      setValue('photo', secureUrl, { shouldValidate: true, shouldDirty: true })
+      setPhotoURL(secureUrl)
+
+      await trigger('photo')
+    }
   }
+
+  function handleRemovePhoto() {
+    setValue('photo', '', { shouldValidate: true, shouldDirty: true })
+    setPhotoURL('')
+  }
+
+  async function handlePhotoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const photoValue = e.target.value
+    setValue('photo', photoValue, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    await trigger('photo')
+  }
+
+  async function onSubmit(data: DigitalMenuSchema) {
+    const result = await updateDigitalMenu(digitalMenuId, data)
+
+    if (result.status === 'success') {
+      toast.success('Item atualizado com sucesso', {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="ml-auto cursor-pointer text-success"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.success[500],
+          border: colors.light.success[500],
+          color: colors.white,
+        },
+      })
+      router.refresh()
+    } else {
+      toast.error(result.error as string, {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="ml-auto cursor-pointer text-danger"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.danger[500],
+          border: colors.light.danger[500],
+          color: colors.white,
+        },
+      })
+    }
+  }
+
+  if (!isLine) return
 
   return (
     <form
@@ -53,23 +143,31 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
       <Card>
         <CardBody>
           <>
-            <Input
-              isRequired
-              defaultValue={digitalMenu.photo}
-              type="text"
-              label="Foto"
-              placeholder="Foto do item"
-              size="sm"
-              variant="bordered"
-              color="primary"
-              classNames={{
-                input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
-              }}
-              onClear={() => console.log('input cleared')}
-              {...register('photo')}
-              isInvalid={!!errors.photo}
-              errorMessage={<ErrorMessage message={errors.photo?.message} />}
+            <div className="mb-2">
+              <PhotoUploadButton
+                removePhoto={handleRemovePhoto}
+                className={
+                  errors.photo?.message && photoURL === ''
+                    ? 'border-2 border-danger'
+                    : ''
+                }
+                onUploadImage={onAddPhoto}
+                photoURL={photoURL as string}
+              />
+              {errors.photo?.message && photoURL === '' ? (
+                <span className="text-xs text-danger">
+                  <ErrorMessage message={errors.photo?.message} />
+                </span>
+              ) : (
+                ''
+              )}
+            </div>
+            <input
+              type="hidden"
+              value={photoURL as string}
+              {...register('photo', {
+                onChange: handlePhotoChange,
+              })}
             />
 
             <Textarea
@@ -120,6 +218,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 placeholder="Quantidade do item"
                 size="sm"
                 variant="bordered"
+                min={0}
                 color="primary"
                 classNames={{
                   input:
@@ -141,6 +240,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 placeholder="Quantidade de calorias"
                 size="sm"
                 variant="bordered"
+                min={0}
                 color="primary"
                 classNames={{
                   input:
@@ -161,6 +261,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 label="Estoque"
                 placeholder="Quantidade do estoque"
                 size="sm"
+                min={0}
                 variant="bordered"
                 color="primary"
                 classNames={{
@@ -201,6 +302,35 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
             {statuses.map((status) => (
               <SelectItem key={status.key} color="secondary">
                 {status.label}
+              </SelectItem>
+            ))}
+          </Select>
+
+          <Select
+            isRequired
+            defaultSelectedKeys={[digitalMenu.lineId ? digitalMenu.lineId : '']}
+            color="primary"
+            variant="bordered"
+            size="sm"
+            classNames={{
+              value:
+                'text-slate-500 text-base group-data-[has-value=true]:text-slate-600',
+            }}
+            label="Linha"
+            placeholder="Selecionar linha"
+            className="max-w-xs"
+            {...register('lineId', {
+              onChange: (e) =>
+                setValue('lineId', e.target.value, {
+                  shouldValidate: true,
+                }),
+            })}
+            isInvalid={!!errors.lineId}
+            errorMessage={<ErrorMessage message={errors.lineId?.message} />}
+          >
+            {isLine.map((line) => (
+              <SelectItem key={line.id} color="secondary">
+                {line.title}
               </SelectItem>
             ))}
           </Select>

@@ -11,7 +11,9 @@ import {
 } from '@nextui-org/react'
 import { Line } from '@prisma/client'
 import Link from 'next/link'
-import { FiEdit, FiTrash } from 'react-icons/fi'
+import { FiEdit } from 'react-icons/fi'
+
+import { DigitalMenuLineDelete } from './DigitalMenLineDelete'
 
 type DigitalMenuLinesTableProps = {
   lines: Line[]
@@ -40,15 +42,11 @@ export function DigitalMenuLinesTable({ lines }: DigitalMenuLinesTableProps) {
                   content="Editar linha"
                   className="text-white"
                 >
-                  <Link href={`lines/${line.id}`}>
+                  <Link href={line.id}>
                     <FiEdit size={16} className="text-success" />
                   </Link>
                 </Tooltip>
-                <Tooltip color="danger" content="Deletar linha">
-                  <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                    <FiTrash />
-                  </span>
-                </Tooltip>
+                <DigitalMenuLineDelete id={line.id} />
               </div>
             </TableCell>
           </TableRow>
