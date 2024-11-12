@@ -8,6 +8,8 @@ import { DigitalMenuFormOrders } from '@/components/DigitalMenuFormOrders'
 import { DigitalMenuOrders } from '@/components/home/DigitalMenuOrders'
 import { useCart } from '@/providers/CartProvider'
 
+export const dynamic = 'force-dynamic'
+
 export default function CheckoutPage() {
   const { productsCart } = useCart()
   const router = useRouter()
