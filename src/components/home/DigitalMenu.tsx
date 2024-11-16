@@ -4,7 +4,10 @@ import {
 } from '@/actions/DigitalMenuLineActions'
 
 import { FinalizeOrder } from '../FinalizeOrder'
-import { DigitalMenuContent } from './DigitalMenuContent'
+import {
+  DigitalMenuContent,
+  DigitalMenuContentItemProps,
+} from './DigitalMenuContent'
 
 export async function DigitalMenu() {
   const lines = await getLines()
@@ -23,7 +26,9 @@ export async function DigitalMenu() {
           na escolha de no mínimo 1 kit do cardápio.
         </p>
 
-        <DigitalMenuContent items={digitalMenusByLine} />
+        <DigitalMenuContent
+          items={digitalMenusByLine as DigitalMenuContentItemProps[]}
+        />
 
         <FinalizeOrder />
       </div>
