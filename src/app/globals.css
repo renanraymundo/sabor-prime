@@ -7,9 +7,17 @@
 }
 
 .theme-vertical-center {
-  @apply min-h-[calc(100vh_-_9.8rem)] h-full;
+  @apply h-full min-h-[calc(100vh_-_9.8rem)];
 }
 
 input:-webkit-autofill {
   -webkit-text-fill-color: #475569;
+}
+
+.jodit_theme_default {
+  @apply !overflow-hidden !rounded-small !border-2 !border-default-200 focus-within:!border-primary;
+}
+
+.jodit-wysiwyg ul {
+  @apply !list-disc px-6 text-slate-600;
 }

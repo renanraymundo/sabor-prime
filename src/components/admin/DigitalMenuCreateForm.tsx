@@ -30,9 +30,12 @@ import {
   digitalMenuSchema,
 } from '@/schemas/DigitalMenuSchema'
 
+import { Editor } from '../Editor'
+
 export function DigitalMenuCreateForm() {
   const [isLine, setIsLine] = useState<Line[]>()
   const [photoURL, setPhotoURL] = useState<string | null>(null)
+  const [inputContentValue, setInputContentValue] = useState('')
 
   const router = useRouter()
 
@@ -87,12 +90,16 @@ export function DigitalMenuCreateForm() {
     await trigger('photo')
   }
 
+  const handleEditorValueChange = (value: string) => {
+    setInputContentValue(value)
+    setValue('description', value)
+  }
+
   async function onSubmit(data: DigitalMenuSchema) {
     const result = await createDigitalMenu({
       ...data,
       photo: photoURL || '',
     })
-    console.log('DATA HERE', result)
 
     if (result.status === 'success') {
       router.push(`/dashboard/menu/${result.data.id}`)
@@ -148,7 +155,6 @@ export function DigitalMenuCreateForm() {
                 onChange: handlePhotoChange,
               })}
             />
-
             <Textarea
               isRequired
               defaultValue=""
@@ -173,23 +179,11 @@ export function DigitalMenuCreateForm() {
                 ) : null
               }
             />
-
-            <Textarea
-              defaultValue=""
-              type="text"
-              minRows={3}
-              label="Descrição (opcional)"
-              placeholder="Ingredientes..."
-              size="sm"
-              variant="bordered"
-              color="primary"
-              className="mb-2"
-              classNames={{
-                input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
-              }}
-              onClear={() => console.log('input cleared')}
+            <Editor
+              placeholder=""
               {...register('description')}
+              value={inputContentValue}
+              onChange={handleEditorValueChange}
             />
 
             <div className="grid grid-cols-4 gap-2">

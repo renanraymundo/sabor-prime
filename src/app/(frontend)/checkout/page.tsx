@@ -14,15 +14,18 @@ export default function CheckoutPage() {
   const { productsCart } = useCart()
   const router = useRouter()
 
-  const quantityItems = productsCart.map((item) => item.quantity)
-  const countItems = quantityItems.reduce(
-    (acc, actualValue) => acc + actualValue,
-    0,
-  )
-
   useEffect(() => {
-    if (countItems < 6) router.push('/')
-  }, [countItems, router])
+    const quantityItems = productsCart.map((item) => item.quantity)
+    const kitItems = productsCart.some(
+      (item) => item.line === 'Kits e Promoções',
+    )
+    const countItems = quantityItems.reduce(
+      (acc, actualValue) => acc + actualValue,
+      0,
+    )
+
+    if (!kitItems && countItems < 6) router.push('/')
+  }, [productsCart, router])
 
   return (
     <section className="w-full py-8">

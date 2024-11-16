@@ -7,6 +7,7 @@ type DigitalMenuQuantityInputProps = {
   title: string
   stock: number
   price: number
+  line: string
 }
 
 export function DigitalMenuQuantityInput({
@@ -14,15 +15,14 @@ export function DigitalMenuQuantityInput({
   stock,
   price,
   title,
+  line,
 }: DigitalMenuQuantityInputProps) {
   const { addProductToCart, removeProductToCart, productsCart } = useCart()
-
-  console.log('Item:', title)
 
   return (
     <>
       <span className="font-semibold text-slate-500">Qtde</span>
-      <div className="flex items-center justify-center gap-2 rounded-large border-2 border-slate-100 px-3 py-1">
+      <div className="flex items-center justify-center gap-2 rounded-large border-2 border-slate-100 px-2 py-1">
         <button
           className="font-mono text-xl font-bold text-slate-500"
           onClick={() => removeProductToCart(id, price)}
@@ -37,7 +37,7 @@ export function DigitalMenuQuantityInput({
         />
         <button
           className="font-mono text-xl font-bold text-slate-500"
-          onClick={() => addProductToCart(id, title, stock, price)}
+          onClick={() => addProductToCart(id, title, line, stock, price)}
         >
           +
         </button>

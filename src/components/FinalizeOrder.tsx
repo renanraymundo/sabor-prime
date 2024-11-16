@@ -11,15 +11,18 @@ export function FinalizeOrder() {
   const { productsCart } = useCart()
   const [isOrderDisabled, setIsOrderDisabled] = useState<boolean>(true)
 
-  const quantityItems = productsCart.map((item) => item.quantity)
-  const countItems = quantityItems.reduce(
-    (acc, actualValue) => acc + actualValue,
-    0,
-  )
-
   useEffect(() => {
-    setIsOrderDisabled(countItems < 6)
-  }, [countItems])
+    const quantityItems = productsCart.map((item) => item.quantity)
+    const kitItems = productsCart.some(
+      (item) => item.line === 'Kits e Promoções',
+    )
+    const countItems = quantityItems.reduce(
+      (acc, actualValue) => acc + actualValue,
+      0,
+    )
+
+    setIsOrderDisabled(!kitItems && countItems < 6)
+  }, [productsCart])
 
   return (
     <>
