@@ -66,7 +66,7 @@ export function DigitalMenuLineCreateForm() {
             color="primary"
             classNames={{
               input:
-                'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
             }}
             onClear={() => console.log('input cleared')}
             {...register('title')}
@@ -74,14 +74,14 @@ export function DigitalMenuLineCreateForm() {
             errorMessage={<ErrorMessage message={errors.title?.message} />}
           />
           <Button
-            className="mt-auto max-w-max text-white disabled:!cursor-not-allowed"
+            className="mt-auto max-w-max font-bold text-white disabled:!cursor-not-allowed"
             size="lg"
             color="success"
             type="submit"
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}
           >
-            <span className="h-5 text-white">Criar linha</span>
+            Criar linha
           </Button>
         </CardBody>
       </Card>

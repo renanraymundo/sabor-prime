@@ -160,7 +160,7 @@ export function DigitalMenuFormOrders({
               color="primary"
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-sm',
               }}
               onClear={() => console.log('input cleared')}
               {...register('name')}
@@ -178,7 +178,7 @@ export function DigitalMenuFormOrders({
               value={phone}
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-sm',
               }}
               startContent={
                 <div className="mr-[10px] flex items-center gap-1">
@@ -189,7 +189,7 @@ export function DigitalMenuFormOrders({
                     src={CountryFlag}
                     alt="Bandeira do Brasil"
                   />
-                  <span className="text-base text-slate-600">+55 </span>
+                  <span className="text-sm text-slate-600">+55 </span>
                 </div>
               }
               onClear={() => setPhone('')}
@@ -200,7 +200,7 @@ export function DigitalMenuFormOrders({
               errorMessage={<ErrorMessage message={errors.whatsapp?.message} />}
             />
           </div>
-          <div className="grid grid-cols-[1fr_10rem] gap-3">
+          <div className="grid grid-cols-[1fr_11rem] gap-3">
             <Input
               isRequired
               type="text"
@@ -211,7 +211,7 @@ export function DigitalMenuFormOrders({
               color="primary"
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-sm',
               }}
               onClear={() => console.log('input cleared')}
               {...register('address')}
@@ -220,18 +220,14 @@ export function DigitalMenuFormOrders({
             />
             <Input
               type="text"
-              label={
-                <p>
-                  Complemento <span className="text-slate-500">(Opcional)</span>
-                </p>
-              }
+              label="Complemento"
               placeholder="Apto, bloco..."
               size="sm"
               variant="bordered"
               color="primary"
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-sm',
               }}
               onClear={() => console.log('input cleared')}
               {...register('complement')}
@@ -248,7 +244,7 @@ export function DigitalMenuFormOrders({
               color="primary"
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-sm',
               }}
               onClear={() => console.log('input cleared')}
               {...register('city')}
@@ -265,7 +261,7 @@ export function DigitalMenuFormOrders({
               size="sm"
               classNames={{
                 value:
-                  'text-slate-500 text-base group-data-[has-value=true]:text-slate-600',
+                  'text-slate-500 text-sm group-data-[has-value=true]:text-slate-600',
               }}
             >
               {states.map((state) => (
@@ -283,22 +279,21 @@ export function DigitalMenuFormOrders({
               variant="ghost"
               as={Link}
               href="/"
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 font-bold"
             >
               <FaArrowLeftLong />
-              <span className="h-5">Alterar Pedido</span>
+              Alterar Pedido
             </Button>
             <Button
               size="lg"
               color="primary"
               variant="solid"
-              className="flex items-center gap-1"
+              className="flex items-center gap-1 font-bold"
               type="submit"
               isLoading={isSubmitting}
               isDisabled={!isValid}
             >
-              <span className="h-5">Enviar Pedido</span>
-
+              Enviar Pedido
               <FaArrowRightLong />
             </Button>
           </div>

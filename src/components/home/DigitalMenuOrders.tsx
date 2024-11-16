@@ -45,7 +45,7 @@ export function DigitalMenuOrders() {
         aria-label="Tabela de pedidos do cliente"
         color="primary"
         classNames={{
-          th: 'bg-secondary text-white font-normal text-base border-white border',
+          th: 'bg-secondary text-white font-normal text-base border-white border font-bold',
         }}
       >
         <TableHeader>
@@ -62,16 +62,16 @@ export function DigitalMenuOrders() {
 
             return (
               <TableRow key={item.id}>
-                <TableCell className="text-base leading-5 text-slate-500">
+                <TableCell className="text-sm leading-5 text-slate-500">
                   {title || 'Produto não encontrado'} (320g)
                 </TableCell>
-                <TableCell className="text-base text-secondary">
+                <TableCell className="text-sm text-secondary">
                   {`R$ ${unitPrice.toFixed(2).replace('.', ',')}`}
                 </TableCell>
-                <TableCell className="text-base text-slate-500">
+                <TableCell className="text-sm text-slate-500">
                   {item.quantity}
                 </TableCell>
-                <TableCell className="text-base text-primary">
+                <TableCell className="text-sm text-primary">
                   {`R$ ${totalPrice.toFixed(2).replace('.', ',')}`}
                 </TableCell>
               </TableRow>
@@ -80,7 +80,7 @@ export function DigitalMenuOrders() {
         </TableBody>
       </Table>
       <div className="flex flex-col text-end">
-        <p className="text-slate-400">Entrega a combinar.</p>
+        <p className="font-semibold text-slate-400">Entrega a combinar.</p>
         <p className="text-small leading-4 text-danger">
           * Informamos que não solicitamos pagamentos neste site ou via
           WhatsApp. O pagamento deverá ser realizado no ato da entrega do seu
@@ -88,7 +88,7 @@ export function DigitalMenuOrders() {
         </p>
         <p className="text-base text-slate-500">
           Subtotal:&nbsp;
-          <span className="text-2xl text-primary">
+          <span className="text-2xl font-bold text-primary">
             {`R$ ${subtotal.toFixed(2).replace('.', ',')}`}
           </span>
         </p>

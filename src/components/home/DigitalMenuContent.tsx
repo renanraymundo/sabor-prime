@@ -1,11 +1,23 @@
 'use client'
-import { Card, CardBody, Chip, Image, Tab, Tabs } from '@nextui-org/react'
+import {
+  Accordion,
+  AccordionItem,
+  Card,
+  CardBody,
+  Chip,
+  cn,
+  Image,
+  Tab,
+  Tabs,
+} from '@nextui-org/react'
+import { TbListDetails } from 'react-icons/tb'
 
 import { DigitalMenuPrice } from '@/components/DigitalMenuPrice'
 import { DigitalMenuQuantityInput } from '@/components/DigitalMenuQuantityInput'
 
 type DigitalMenuContentItemProps = {
   title: string
+  description?: string
   id: string
   photo: string
   price: number
@@ -37,6 +49,8 @@ function groupItemsByLine(items: DigitalMenuContentItemProps[]) {
 export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
   const groupedItems = groupItemsByLine(items)
 
+  console.log('grouped items', groupedItems)
+
   return (
     <Tabs
       aria-label="Linhas Sabor Prime"
@@ -45,14 +59,23 @@ export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
       classNames={{
         base: '!max-w-none',
         tabContent: 'text-slate-500',
-        tab: 'text-xl p-4 h-12',
-        tabList: 'max-xs:flex-col max-xs:w-full mx-auto !mb-4',
+        tab: 'text-base p-4 h-12 font-bold',
+        tabList: 'max-xs:flex-col max-xs:w-full mx-auto !mb-4 ',
       }}
     >
       {Object.entries(groupedItems).map(([lineTitle, categoryItems]) => {
         return (
-          <Tab key={lineTitle} title={`Linha ${lineTitle} (320g)`}>
-            <div className="grid gap-3 lg:grid-cols-2">
+          <Tab key={lineTitle} title={`${lineTitle}`}>
+            <div
+              className={cn(
+                'grid gap-3',
+                categoryItems.map((menu) =>
+                  menu.line?.title === 'Kits e promoções'
+                    ? 'grid-cols-1'
+                    : 'lg:grid-cols-2',
+                ),
+              )}
+            >
               {categoryItems.map((menu) => {
                 return (
                   <Card
@@ -71,8 +94,12 @@ export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
                           alt={menu.title}
                         />
                         <div className="absolute right-6 top-6 z-10 flex h-12 w-12 flex-col items-center justify-center rounded-large bg-white py-2 leading-4 xs:hidden">
-                          <span className="text-slate-500">Kcal</span>
-                          <span className="text-primary">{menu.calories}</span>
+                          <span className="font-semibold text-slate-500">
+                            Kcal
+                          </span>
+                          <span className="font-medium text-primary">
+                            {menu.calories}
+                          </span>
                         </div>
                       </div>
                       <div className="space-y-2 max-xs:text-center">
@@ -82,19 +109,42 @@ export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
                           color={
                             menu.status === 'DEACTIVATED' ? 'danger' : 'primary'
                           }
-                          className={
+                          className={cn(
                             menu.status === 'DEACTIVATED'
                               ? 'text-red-500'
-                              : 'text-primary-500'
-                          }
+                              : 'text-primary-500',
+                          )}
                         >
                           {menu.status !== 'DEACTIVATED'
-                            ? `Estoque: ${menu.stock} ${menu.stock > 1 ? 'unidades' : 'unidade'}`
+                            ? `Estoque: ${menu.stock} ${menu.stock > 1 ? 'unidades' : 'Para finalizar seu '}`
                             : 'Esgotado'}
                         </Chip>
-                        <p className="text-xl font-normal leading-6 text-slate-500">
+                        <p className="text-base font-semibold leading-5 text-slate-500">
                           {menu.title}
                         </p>
+                        {menu.description && (
+                          <Accordion className="px-0">
+                            <AccordionItem
+                              key={menu.id}
+                              aria-label="Detalhes"
+                              title="Detalhes"
+                              classNames={{
+                                base: 'text-slate-500 text-sm',
+                                heading: '[&>button]:p-0',
+
+                                title:
+                                  'text-slate-500 font-semibold text-sm underline',
+                              }}
+                              startContent={
+                                <TbListDetails className="text-primary" />
+                              }
+                            >
+                              {menu.description}
+                            </AccordionItem>
+                          </Accordion>
+                        )}
+
+                        {/* )} */}
                         <ul className="flex items-center justify-between gap-2 max-xs:flex-col xs:flex-row">
                           <li className="flex items-center gap-2">
                             <DigitalMenuQuantityInput
@@ -115,8 +165,12 @@ export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
                         </ul>
                       </div>
                       <div className="mb-auto flex h-12 w-12 flex-col items-center justify-center rounded-large bg-slate-100 py-2 leading-4 max-xs:mx-auto max-xs:hidden">
-                        <span className="text-slate-500">Kcal</span>
-                        <span className="text-primary">{menu.calories}</span>
+                        <span className="font-semibold text-slate-500">
+                          Kcal
+                        </span>
+                        <span className="font-medium text-primary">
+                          {menu.calories}
+                        </span>
                       </div>
                     </CardBody>
                   </Card>

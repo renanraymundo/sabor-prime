@@ -13,14 +13,14 @@ export async function DigitalMenu() {
   )
 
   return (
-    <section className="flex items-center justify-center py-4">
+    <section className="flex items-center justify-center py-12">
       <div className="theme-container">
-        <h1 className="relative mx-auto flex max-w-max items-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary px-8 py-2 text-white before:h-2 before:w-2 before:rounded-full before:bg-white after:h-2 after:w-2 after:rounded-full after:bg-white max-xs:text-3xl xs:text-4xl">
+        <h1 className="relative mx-auto flex max-w-max items-center gap-2 rounded-xl bg-gradient-to-r from-primary-500 to-primary px-8 py-2 font-bold text-white before:h-2 before:w-2 before:rounded-full before:bg-white after:h-2 after:w-2 after:rounded-full after:bg-white max-xs:text-2xl xs:text-3xl">
           Cardápio Digital
         </h1>
-        <p className="mt-2 text-center text-2xl leading-6">
-          Monte seu kit, entregamos a partir de 6 unidades de qualquer linha do
-          cardápio.
+        <p className="mt-2 text-center max-md:text-base max-md:leading-5 md:text-xl md:leading-6">
+          Monte seu kit, entregamos a partir de 6 unidades de qualquer linha ou
+          na escolha de no mínimo 1 kit do cardápio.
         </p>
 
         <DigitalMenuContent items={digitalMenusByLine} />

@@ -1,5 +1,6 @@
 'use client'
 
+import { cn } from '@nextui-org/react'
 import { DigitalMenu, Line } from '@prisma/client'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -58,18 +59,19 @@ export function Breadcrumb({ pathname, id }: PathnameProps) {
     return items
       .flatMap((item) => item.paths)
       .filter((item) => pathname.startsWith(item.path))
-      .map((item, index, array) => {
-        const isLastItem = index === array.length - 1
-
+      .map((item) => {
         return (
           <div key={item.path} className="flex items-center gap-1">
             <Link
               href={item.path}
-              className={isLastItem ? 'text-secondary' : ''}
+              className={cn(
+                pathname === item.path ? 'text-secondary' : '',
+                'text-sm',
+              )}
             >
               {item.name}
             </Link>
-            {isLastItem || <FiChevronRight />}
+            {pathname !== item.path && <FiChevronRight />}
           </div>
         )
       })

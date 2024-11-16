@@ -23,7 +23,7 @@ export function DigitalMenuLinesTable({ lines }: DigitalMenuLinesTableProps) {
     <Table
       aria-label="Tabla de items"
       classNames={{
-        th: 'bg-primary text-white font-normal text-base border-white border',
+        th: 'bg-primary text-white font-bold text-base border-white border',
       }}
     >
       <TableHeader>
@@ -33,7 +33,7 @@ export function DigitalMenuLinesTable({ lines }: DigitalMenuLinesTableProps) {
       <TableBody>
         {lines.map((line) => (
           <TableRow key={line.id}>
-            <TableCell>{line.title}</TableCell>
+            <TableCell className="font-semibold">{line.title}</TableCell>
 
             <TableCell>
               <div className="relative flex items-center gap-2">

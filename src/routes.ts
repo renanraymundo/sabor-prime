@@ -1,3 +1,3 @@
-export const publicRoutes = ['/']
+export const publicRoutes = ['/', 'sobre-nos', 'checkout']
 
 export const authRoutes = ['/login']

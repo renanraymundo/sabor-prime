@@ -58,7 +58,14 @@ export function Cart() {
           variant="light"
           className="overflow-visible"
         >
-          <Badge content={count || 0} shape="circle" color="danger">
+          <Badge
+            content={count || 0}
+            shape="circle"
+            color="danger"
+            classNames={{
+              badge: 'font-bold text-xs',
+            }}
+          >
             <FiShoppingCart size={24} className="text-slate-500" />
           </Badge>
         </Button>
@@ -81,7 +88,7 @@ export function Cart() {
       >
         <DropdownSection aria-label="Items in Cart" showDivider>
           <DropdownItem isReadOnly>
-            <h1 className="text-base text-primary">Carrinho</h1>
+            <h1 className="text-base font-semibold text-primary">Carrinho</h1>
           </DropdownItem>
         </DropdownSection>
 
@@ -107,19 +114,22 @@ export function Cart() {
                       alt={digitalMenuOptions[item.id]?.title}
                     />
                     <ul className="flex-1">
-                      <li className="leading-4 text-slate-500">
-                        {`${digitalMenuOptions[item.id]?.title} (320g)` ||
-                          'Produto não encontrado'}
+                      <li className="text-sm leading-4 text-slate-500">
+                        {`${digitalMenuOptions[item.id]?.title?.slice(0, 23)}${
+                          digitalMenuOptions[item.id]?.title?.length > 23
+                            ? '...'
+                            : ''
+                        }` || 'Produto não encontrado'}
                       </li>
                       <li className="flex items-center gap-2 text-slate-500">
-                        <p className="h-[18px]">
+                        <p className="h-[18px] text-sm">
                           <span className="text-slate-600">Qtde: </span>&nbsp;
-                          {item.quantity}&nbsp;
-                          {item.quantity === 1 ? 'unidade' : 'unidades'}
+                          {item.quantity}
                         </p>
                         <p>
-                          <span className="text-slate-600">Total:</span>&nbsp;
-                          <span className="text-base text-secondary">
+                          <span className="text-sm text-slate-600">Total:</span>
+                          &nbsp;
+                          <span className="text-base font-semibold text-secondary">
                             {totalPrice.toFixed(2).replace('.', ',')}
                           </span>
                         </p>

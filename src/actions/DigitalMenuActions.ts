@@ -31,14 +31,24 @@ export async function createDigitalMenu(
     if (!validated.success)
       return { status: 'error', error: validated.error.errors }
 
-    const { title, photo, price, calories, quantity, status, stock, lineId } =
-      validated.data
+    const {
+      title,
+      description,
+      photo,
+      price,
+      calories,
+      quantity,
+      status,
+      stock,
+      lineId,
+    } = validated.data
 
     const digitalMenu = await prisma.digitalMenu.create({
       data: {
         userId,
         photo,
         title,
+        description,
         price,
         calories,
         quantity,
@@ -72,8 +82,17 @@ export async function updateDigitalMenu(
     if (!validated.success)
       return { status: 'error', error: validated.error.errors }
 
-    const { title, photo, price, calories, quantity, status, stock, lineId } =
-      validated.data
+    const {
+      title,
+      description,
+      photo,
+      price,
+      calories,
+      quantity,
+      status,
+      stock,
+      lineId,
+    } = validated.data
 
     const digitalMenu = await prisma.digitalMenu.update({
       where: {
@@ -83,6 +102,7 @@ export async function updateDigitalMenu(
         userId,
         photo,
         title,
+        description,
         price,
         calories,
         quantity,

@@ -53,6 +53,7 @@ export async function getDigitalMenusByLine(ids: string[]) {
         id: true,
         photo: true,
         title: true,
+        description: true,
         quantity: true,
         price: true,
         calories: true,

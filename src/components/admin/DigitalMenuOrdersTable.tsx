@@ -25,7 +25,7 @@ export function DigitalMenuOrdersTable({
     <Table
       aria-label="Tabla de pedidos"
       classNames={{
-        th: 'bg-primary text-white font-normal text-base border-white border',
+        th: 'bg-primary text-white font-bold text-base border-white border',
       }}
     >
       <TableHeader>

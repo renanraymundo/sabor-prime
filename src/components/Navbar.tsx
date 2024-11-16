@@ -115,9 +115,9 @@ export function Navbar() {
             <Link
               href={item.path}
               className={cn(
-                'text-xl font-normal',
+                'text-base font-medium',
                 pathname === item.path
-                  ? 'text-secondary-100'
+                  ? 'font-bold text-secondary-100'
                   : 'text-slate-400',
               )}
             >
