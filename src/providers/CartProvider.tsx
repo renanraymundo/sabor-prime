@@ -13,6 +13,7 @@ type ProductInCart = {
   id: string
   title: string
   quantity: number
+  line: string
   price: number
   totalPrice: number
 }
@@ -22,6 +23,7 @@ interface CartContextType {
   addProductToCart: (
     id: string,
     title: string,
+    line: string,
     stock: number,
     price: number,
   ) => void
@@ -50,12 +52,14 @@ export default function CartProvider({ children }: CartProviderProps) {
   function addProductToCart(
     id: string,
     title: string,
+    line: string,
     stock: number,
     price: number,
   ) {
     const productTitle = title
     const copyProductsCart = [...productsCart]
     const item = copyProductsCart.find((product) => product.id === id)
+    const productLine = line
 
     if (!item) {
       copyProductsCart.push({
@@ -63,12 +67,14 @@ export default function CartProvider({ children }: CartProviderProps) {
         title: productTitle,
         quantity: 1,
         price,
+        line: productLine,
         totalPrice: price,
       })
     } else if (item.quantity < stock) {
       item.title = productTitle
       item.quantity += 1
       item.totalPrice = item.quantity * price
+      item.line = productLine
     }
 
     setProductsCart(copyProductsCart)

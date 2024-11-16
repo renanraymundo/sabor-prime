@@ -30,6 +30,7 @@ import {
   digitalMenuSchema,
 } from '@/schemas/DigitalMenuSchema'
 
+import { Editor } from '../Editor'
 import { PhotoUploadButton } from '../PhotoUploadButton'
 
 type DigitalMenuEditFormProps = {
@@ -39,6 +40,9 @@ type DigitalMenuEditFormProps = {
 export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
   const [isLine, setIsLine] = useState<Line[]>()
   const [photoURL, setPhotoURL] = useState<string | null>(digitalMenu.photo)
+  const [inputContentValue, setInputContentValue] = useState<string>(
+    digitalMenu.description || '',
+  )
   const router = useRouter()
   const pathname = usePathname()
   const statuses = [
@@ -67,6 +71,11 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
 
     lineFetch()
   }, [])
+
+  const handleEditorValueChange = (value: string) => {
+    setInputContentValue(value)
+    setValue('description', value, { shouldDirty: true })
+  }
 
   async function onAddPhoto(result: CloudinaryUploadWidgetResults) {
     if (result.info && typeof result.info === 'object') {
@@ -190,22 +199,11 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
               errorMessage={<ErrorMessage message={errors.title?.message} />}
             />
 
-            <Textarea
-              defaultValue={digitalMenu.description || ''}
-              type="text"
-              minRows={3}
-              label="Descrição (opcional)"
+            <Editor
               placeholder="Ingredientes..."
-              size="sm"
-              variant="bordered"
-              color="primary"
-              className="mb-2"
-              classNames={{
-                input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
-              }}
-              onClear={() => console.log('input cleared')}
               {...register('description')}
+              value={inputContentValue}
+              onChange={handleEditorValueChange}
             />
 
             <div className="grid grid-cols-4 gap-2">
