@@ -49,8 +49,6 @@ function groupItemsByLine(items: DigitalMenuContentItemProps[]) {
 export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
   const groupedItems = groupItemsByLine(items)
 
-  console.log('grouped items', groupedItems)
-
   return (
     <Tabs
       aria-label="Linhas Sabor Prime"
