@@ -152,6 +152,7 @@ export function DigitalMenuCreateForm() {
             <Textarea
               isRequired
               defaultValue=""
+              minRows={1}
               type="text"
               label="Título"
               placeholder="Marmita tal"
@@ -161,7 +162,7 @@ export function DigitalMenuCreateForm() {
               className="mb-2"
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
               }}
               onClear={() => console.log('input cleared')}
               {...register('title')}
@@ -171,6 +172,24 @@ export function DigitalMenuCreateForm() {
                   <ErrorMessage message={errors.title.message} />
                 ) : null
               }
+            />
+
+            <Textarea
+              defaultValue=""
+              type="text"
+              minRows={3}
+              label="Descrição (opcional)"
+              placeholder="Ingredientes..."
+              size="sm"
+              variant="bordered"
+              color="primary"
+              className="mb-2"
+              classNames={{
+                input:
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
+              }}
+              onClear={() => console.log('input cleared')}
+              {...register('description')}
             />
 
             <div className="grid grid-cols-4 gap-2">
@@ -185,7 +204,7 @@ export function DigitalMenuCreateForm() {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 startContent={<span className="text-slate-500">R$</span>}
                 onClear={() => console.log('input cleared')}
@@ -210,7 +229,7 @@ export function DigitalMenuCreateForm() {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 onClear={() => console.log('input cleared')}
                 {...register('quantity')}
@@ -234,7 +253,7 @@ export function DigitalMenuCreateForm() {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 onClear={() => console.log('input cleared')}
                 {...register('calories')}
@@ -258,7 +277,7 @@ export function DigitalMenuCreateForm() {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 onClear={() => console.log('input cleared')}
                 {...register('stock')}
@@ -274,7 +293,7 @@ export function DigitalMenuCreateForm() {
         </CardBody>
       </Card>
       <Card>
-        <CardHeader className="pb-0 text-xl text-slate-500">
+        <CardHeader className="pb-0 text-base font-bold text-slate-500">
           Publicar
         </CardHeader>
         <CardBody>
@@ -291,7 +310,7 @@ export function DigitalMenuCreateForm() {
             size="sm"
             classNames={{
               value:
-                'text-slate-500 text-base group-data-[has-value=true]:text-slate-600',
+                'text-slate-500 text-sm group-data-[has-value=true]:text-slate-600',
             }}
             label="Status"
             placeholder="Selecionar status"
@@ -316,7 +335,7 @@ export function DigitalMenuCreateForm() {
             size="sm"
             classNames={{
               value:
-                'text-slate-500 text-base group-data-[has-value=true]:text-slate-600',
+                'text-slate-500 text-sm group-data-[has-value=true]:text-slate-600',
             }}
             label="Linha"
             placeholder="Selecionar linha"
@@ -341,14 +360,14 @@ export function DigitalMenuCreateForm() {
             ))}
           </Select>
           <Button
-            className="mt-auto text-white disabled:!cursor-not-allowed"
+            className="mt-auto font-bold text-white disabled:!cursor-not-allowed"
             size="lg"
             color="success"
             type="submit"
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}
           >
-            <span className="h-5 text-white">Criar item</span>
+            Criar item
           </Button>
         </CardBody>
       </Card>

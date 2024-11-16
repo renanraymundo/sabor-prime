@@ -24,8 +24,7 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        'bebas-neue': 'var(--font-bebas-neue)',
-        'dancing-script': 'var(--font-dancing-script)',
+        'open-sans': 'var(--font-sans)',
       },
       screens: {
         ...defaultTheme.screens,

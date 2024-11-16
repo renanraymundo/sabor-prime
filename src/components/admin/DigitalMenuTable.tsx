@@ -3,6 +3,7 @@
 import {
   Image,
   Link,
+  Pagination,
   Table,
   TableBody,
   TableCell,
@@ -12,7 +13,7 @@ import {
   Tooltip,
 } from '@nextui-org/react'
 import { DigitalMenu } from '@prisma/client'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 // import Link from 'next/link'
 // import { useEffect, useState } from 'react'
 import { FiEdit } from 'react-icons/fi'
@@ -36,6 +37,9 @@ export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
     [key: string]: LineProps | undefined
   }>({})
 
+  const [page, setPage] = useState<number>(1)
+  const rowsPerPage = 8
+
   useEffect(() => {
     const fetchLineData = async () => {
       const data: { [key: string]: LineProps | undefined } = {}
@@ -51,26 +55,48 @@ export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
     fetchLineData()
   }, [digitalMenu])
 
+  const pages = Math.ceil(digitalMenu.length / rowsPerPage)
+
+  const items = useMemo(() => {
+    const start = (page - 1) * rowsPerPage
+    const end = start + rowsPerPage
+
+    return digitalMenu.slice(start, end)
+  }, [page, digitalMenu])
+
   return (
     <Table
       aria-label="Tabla de items"
       classNames={{
         th: 'bg-primary text-white font-normal text-base border-white border',
       }}
+      bottomContent={
+        <div className="flex w-full justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="secondary"
+            page={page}
+            total={pages}
+            onChange={(page) => setPage(page)}
+          />
+        </div>
+      }
     >
       <TableHeader>
-        <TableColumn>Foto</TableColumn>
-        <TableColumn>Título</TableColumn>
-        <TableColumn>Preço unitário</TableColumn>
-        <TableColumn>Quantidade</TableColumn>
-        <TableColumn>Calorias</TableColumn>
-        <TableColumn>Estoque</TableColumn>
-        <TableColumn>Status</TableColumn>
-        <TableColumn>Linha</TableColumn>
-        <TableColumn>Ações</TableColumn>
+        <TableColumn className="font-semibold">Foto</TableColumn>
+        <TableColumn className="font-semibold">Título</TableColumn>
+        <TableColumn className="font-semibold">Preço unitário</TableColumn>
+        <TableColumn className="font-semibold">Quantidade</TableColumn>
+        <TableColumn className="font-semibold">Calorias</TableColumn>
+        <TableColumn className="font-semibold">Estoque</TableColumn>
+        <TableColumn className="font-semibold">Status</TableColumn>
+        <TableColumn className="font-semibold">Linha</TableColumn>
+        <TableColumn className="font-semibold">Ações</TableColumn>
       </TableHeader>
       <TableBody>
-        {digitalMenu.map((item) => (
+        {items.map((item) => (
           <TableRow key={item.id}>
             <TableCell>
               <Image
@@ -79,17 +105,19 @@ export function DigitalMenuTable({ digitalMenu }: DigitalMenuTableProps) {
                 className="h-10 w-10 rounded-full border border-slate-400 object-cover"
               />
             </TableCell>
-            <TableCell>{item.title}</TableCell>
-            <TableCell>
+            <TableCell className="font-medium">{item.title}</TableCell>
+            <TableCell className="font-medium">
               <DigitalMenuPriceTable price={item.price} />
             </TableCell>
-            <TableCell>{item.quantity}</TableCell>
-            <TableCell>{item.calories}</TableCell>
-            <TableCell>{item.stock}</TableCell>
+            <TableCell className="font-medium">{item.quantity}</TableCell>
+            <TableCell className="font-medium">{item.calories}</TableCell>
+            <TableCell className="font-medium">{item.stock}</TableCell>
             <TableCell>
               <DigitalMenuStatus status={item.status} />
             </TableCell>
-            <TableCell>{lineData[item.lineId || '']?.title || ''}</TableCell>
+            <TableCell className="font-medium">
+              {lineData[item.lineId || '']?.title || ''}
+            </TableCell>
             <TableCell>
               <div className="relative flex items-center gap-2">
                 <Tooltip

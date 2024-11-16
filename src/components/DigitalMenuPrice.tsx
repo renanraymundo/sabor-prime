@@ -21,10 +21,10 @@ export function DigitalMenuPrice({
   const totalPrice = quantity && quantity * price
   return (
     <span
-      className={cn('text-secondary-100', {
+      className={cn('font-bold text-secondary-100', {
         'text-small': size === 'sm',
-        'text-4xl': size === 'md',
-        'text-5xl': size === 'lg',
+        'text-2xl': size === 'md',
+        'text-3xl': size === 'lg',
       })}
     >
       {`R$ ${

@@ -173,6 +173,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
             <Textarea
               isRequired
               defaultValue={digitalMenu.title}
+              minRows={1}
               type="text"
               label="Título"
               placeholder="Marmita tal"
@@ -181,12 +182,30 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
               color="primary"
               classNames={{
                 input:
-                  'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
               }}
               onClear={() => console.log('input cleared')}
               {...register('title')}
               isInvalid={!!errors.title}
               errorMessage={<ErrorMessage message={errors.title?.message} />}
+            />
+
+            <Textarea
+              defaultValue={digitalMenu.description || ''}
+              type="text"
+              minRows={3}
+              label="Descrição (opcional)"
+              placeholder="Ingredientes..."
+              size="sm"
+              variant="bordered"
+              color="primary"
+              className="mb-2"
+              classNames={{
+                input:
+                  'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
+              }}
+              onClear={() => console.log('input cleared')}
+              {...register('description')}
             />
 
             <div className="grid grid-cols-4 gap-2">
@@ -201,7 +220,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 startContent={<span className="text-slate-500">R$</span>}
                 onClear={() => console.log('input cleared')}
@@ -222,7 +241,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 onClear={() => console.log('input cleared')}
                 {...register('quantity')}
@@ -244,7 +263,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 onClear={() => console.log('input cleared')}
                 {...register('calories')}
@@ -266,7 +285,7 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
                 color="primary"
                 classNames={{
                   input:
-                    'text-slate-600 placeholder:text-slate-300 placeholder:text-base text-base',
+                    'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-base',
                 }}
                 onClear={() => console.log('input cleared')}
                 {...register('stock')}
@@ -335,14 +354,14 @@ export function DigitalMenuEditForm({ digitalMenu }: DigitalMenuEditFormProps) {
             ))}
           </Select>
           <Button
-            className="mt-auto text-white disabled:!cursor-not-allowed"
+            className="mt-auto font-bold text-white disabled:!cursor-not-allowed"
             size="lg"
             color="success"
             type="submit"
             isLoading={isSubmitting}
             isDisabled={!isValid || !isDirty}
           >
-            <span className="h-5 text-white">Salvar alterações</span>
+            Salvar alterações
           </Button>
         </CardBody>
       </Card>

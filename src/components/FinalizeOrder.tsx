@@ -24,9 +24,9 @@ export function FinalizeOrder() {
   return (
     <>
       <div className="mt-4 flex w-full flex-col items-center space-y-2 text-center">
-        <p className="text-sm text-danger">
-          * Para finalizar seu pedido você deve escolher no mínimo 6 unidades de
-          qualquer linha.
+        <p className="text-sm font-semibold text-danger">
+          *Para finalizar seu pedido você deve escolher no mínimo 6 unidades de
+          qualquer linha e/ou 1 kit promocional.
           <br />
           Válido enquanto durar o estoque.
         </p>
@@ -34,11 +34,11 @@ export function FinalizeOrder() {
           as={isOrderDisabled ? undefined : Link}
           href="/checkout"
           color="secondary"
-          size="lg"
+          size="md"
           disabled={isOrderDisabled}
-          className="flex items-center justify-center gap-1 leading-normal disabled:cursor-not-allowed disabled:bg-opacity-60"
+          className="flex items-center justify-center gap-1 font-semibold leading-normal disabled:cursor-not-allowed disabled:bg-opacity-60"
         >
-          <span className="h-5">Fechar Pedido</span>
+          Fechar Pedido
           {isOrderDisabled ? (
             <MdOutlineDoNotDisturbAlt size={18} />
           ) : (

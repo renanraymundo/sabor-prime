@@ -27,7 +27,7 @@ export function UserInfo({ userInfo }: UserInfoProps) {
         <div className="flex items-center">
           <span className="flex items-center gap-2">
             <Avatar isBordered src={userInfo.image} />
-            <span className="h-5">{userInfo.name}</span>
+            <span className="h-5 text-sm">{userInfo.name}</span>
           </span>
           <BiChevronDown className="text-secondary" />
         </div>

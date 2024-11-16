@@ -43,12 +43,12 @@ export function PhotoUploadButton({
         signatureEndpoint="/api/sign-image"
         uploadPreset="sabor-prime"
         className={cn(
-          'flex max-w-max items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-white transition hover:border-secondary/70',
+          'flex max-w-max items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-sm font-bold text-white transition hover:border-secondary/70',
           props.className,
         )}
       >
-        <HiPhoto size={28} />
-        <span className="h-5">Carregar a foto</span>
+        <HiPhoto size={24} />
+        Carregar a foto
       </CldUploadButton>
     </div>
   )

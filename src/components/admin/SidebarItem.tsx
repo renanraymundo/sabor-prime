@@ -23,13 +23,13 @@ export function SidebarItem({
     <div className="text-xl">
       <span
         className={cn(
-          'flex h-5 items-center gap-1',
+          'flex h-5 items-center gap-1 text-base font-semibold',
           pathname.includes(path) && pathname !== '/dashboard'
             ? 'text-primary'
             : 'text-slate-500',
         )}
       >
-        <Icon size={22} />
+        <Icon size={20} />
         {name}
       </span>
       <ul className="ml-6 mt-2 list-disc space-y-1">
@@ -37,7 +37,7 @@ export function SidebarItem({
           <li
             key={subitem.id}
             className={cn(
-              'text-base hover:text-secondary',
+              'text-sm hover:text-secondary',
               pathname === subitem.path ? 'text-secondary' : 'text-slate-400',
             )}
           >
@@ -50,12 +50,12 @@ export function SidebarItem({
     <Link href={path}>
       <span
         className={cn(
-          'text-xl',
+          'text-base font-semibold',
           pathname === path ? 'text-primary' : 'text-slate-500',
           'flex h-5 items-center gap-1',
         )}
       >
-        <Icon size={22} />
+        <Icon size={20} />
 
         {name}
       </span>
