@@ -15,7 +15,7 @@ import { TbListDetails } from 'react-icons/tb'
 import { DigitalMenuPrice } from '@/components/DigitalMenuPrice'
 import { DigitalMenuQuantityInput } from '@/components/DigitalMenuQuantityInput'
 
-type DigitalMenuContentItemProps = {
+export type DigitalMenuContentItemProps = {
   title: string
   description?: string
   id: string
