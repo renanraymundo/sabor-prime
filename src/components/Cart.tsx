@@ -10,6 +10,7 @@ import {
   DropdownTrigger,
   Image,
 } from '@nextui-org/react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { BiTrash } from 'react-icons/bi'
 import { FiShoppingCart } from 'react-icons/fi'
@@ -19,9 +20,23 @@ import { useCart } from '@/providers/CartProvider'
 
 export function Cart() {
   const { productsCart, removeProductFromCart, clearCart } = useCart()
+  const [count, setCount] = useState<number>(0)
 
-  const quantityItems = productsCart.map((item) => item.quantity)
-  const count = quantityItems.reduce((acc, actualValue) => acc + actualValue, 0)
+  const [isButtonEnabled, setIsButtonEnabled] = useState<boolean>(true)
+
+  useEffect(() => {
+    const quantityItems = productsCart.map((item) => item.quantity)
+    const kitItems = productsCart.some(
+      (item) => item.line === 'Kits e Promoções',
+    )
+    const countItems = quantityItems.reduce(
+      (acc, actualValue) => acc + actualValue,
+      0,
+    )
+
+    setIsButtonEnabled(!kitItems && countItems < 6)
+    setCount(countItems)
+  }, [productsCart])
 
   const [digitalMenuOptions, setDigitalMenuOptions] = useState<Record<
     string,
@@ -147,16 +162,24 @@ export function Cart() {
                 )
               })
             )}
-            {count && count > 0 && (
-              <DropdownItem
-                as="button"
-                key="delete"
-                className="max-w-max text-danger hover:!bg-danger-100 hover:!text-danger"
-                color="danger"
-                variant="solid"
-                onClick={clearCart}
-              >
-                Limpar carrinho
+            {count > 0 && (
+              <DropdownItem className="p-0 hover:!bg-transparent [&>span]:flex [&>span]:items-center [&>span]:justify-between">
+                <Button
+                  variant="light"
+                  color="danger"
+                  onClick={clearCart}
+                  className="p-0 hover:!bg-transparent hover:underline"
+                >
+                  Limpar carrinho
+                </Button>
+                {!isButtonEnabled && (
+                  <Link
+                    className="rounded-small bg-primary p-2 text-white"
+                    href="/checkout"
+                  >
+                    Fechar pedido
+                  </Link>
+                )}
               </DropdownItem>
             )}
           </>
