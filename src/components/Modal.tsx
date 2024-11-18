@@ -12,8 +12,6 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { IoAlertCircleOutline } from 'react-icons/io5'
 
-import { useCart } from '@/providers/CartProvider'
-
 export type MenuDigitalOrderItem = {
   id: string
   quantity: number
@@ -25,7 +23,7 @@ type ModalProps = {
 
 export default function Modal({ isOpen }: ModalProps) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const { clearCart } = useCart()
+
   const router = useRouter()
 
   async function handleFinishOrder() {
@@ -33,8 +31,7 @@ export default function Modal({ isOpen }: ModalProps) {
 
     setTimeout(() => {
       router.push('/')
-      clearCart()
-    }, 3000)
+    }, 1000)
   }
 
   return (

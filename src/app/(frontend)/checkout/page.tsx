@@ -15,16 +15,14 @@ export default function CheckoutPage() {
   const router = useRouter()
 
   useEffect(() => {
-    const quantityItems = productsCart.map((item) => item.quantity)
     const kitItems = productsCart.some(
       (item) => item.line === 'Kits e Promoções',
     )
-    const countItems = quantityItems.reduce(
-      (acc, actualValue) => acc + actualValue,
-      0,
-    )
+    const enabledTotalPrice = productsCart
+      .map((item) => item.totalPrice)
+      .reduce((acc, curr) => acc + curr, 0)
 
-    if (!kitItems && countItems < 6) router.push('/')
+    if (!kitItems && enabledTotalPrice <= 90.0) router.push('/')
   }, [productsCart, router])
 
   return (

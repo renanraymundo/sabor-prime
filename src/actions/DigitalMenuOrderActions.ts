@@ -1,10 +1,13 @@
 'use server'
 
-import { Order, OrderItem, Prisma } from '@prisma/client'
+import { Order, OrderItem, OrderStatus, Prisma } from '@prisma/client'
 
+import { OrdersWithItems } from '@/components/admin/DigitalMenuOrderItemsTable'
 import { prisma } from '@/lib/prisma'
 import { createDigitalMenuOrderSchema } from '@/schemas/DigitalMenuOrderSchema'
 import { sendOrderEmail } from '@/services/mail'
+
+import { ActionResult } from '.'
 
 export type CreateOrderProps = {
   protocolNumber: string
@@ -53,6 +56,7 @@ export async function createOrder(orderData: CreateOrderProps): Promise<Order> {
             title: item.title,
             quantity: item.quantity,
             price: item.price,
+            digitalMenuId: item.digitalMenuId,
             totalPrice: item.totalPrice,
           })),
         },
@@ -124,5 +128,46 @@ export async function getOrderById(
     console.log(error)
 
     throw Error
+  }
+}
+
+export async function updateOrderStatus(
+  id: string,
+  status: OrderStatus,
+  order: OrdersWithItems,
+): Promise<ActionResult<string>> {
+  try {
+    order?.items.map(async (item) => {
+      const digitalMenu = await prisma.digitalMenu.findUnique({
+        where: { id: item.digitalMenuId },
+      })
+
+      if (!digitalMenu) {
+        throw new Error(`Product with id ${item.digitalMenuId} not found`)
+      }
+
+      const updatedQuantity = digitalMenu.quantity - item.quantity
+
+      if (updatedQuantity < 0) {
+        throw new Error(`Not enough quantity for product ${item.id}`)
+      }
+
+      if (status === 'COMPLETED') {
+        await prisma.digitalMenu.update({
+          where: { id: item.digitalMenuId },
+          data: { quantity: updatedQuantity, stock: updatedQuantity },
+        })
+      }
+    })
+
+    await prisma.order.update({
+      where: { id },
+      data: { status },
+    })
+
+    return { status: 'success', data: 'Quantidade atualizada com sucesso' }
+  } catch (error) {
+    console.log(error)
+    throw error
   }
 }
