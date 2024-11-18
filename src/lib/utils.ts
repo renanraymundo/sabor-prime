@@ -51,13 +51,16 @@ export function formatPhoneNumber(phoneNumber: string) {
   return `+55${ddd}${number}`
 }
 
-export function setAdminPageTitle(pathname: string) {
+export function setAdminPageTitle(pathname: string, id: string) {
   switch (pathname) {
     case '/dashboard':
       return 'Dashboard'
 
     case '/dashboard/menu/items':
       return 'Todos os itens'
+
+    case `/dashboard/menu/${id}`:
+      return 'Item criado'
 
     case '/dashboard/menu/create':
       return 'Adicionar novo'
@@ -68,8 +71,14 @@ export function setAdminPageTitle(pathname: string) {
     case '/dashboard/lines/create':
       return 'Adicionar nova'
 
+    case `/dashboard/lines/${id}`:
+      return 'Linha criada'
+
     case '/dashboard/orders':
       return 'Todos os pedidos'
+
+    case `/dashboard/orders/${id}`:
+      return 'Pedido solicitado'
 
     default:
       return null

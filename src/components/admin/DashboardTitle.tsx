@@ -11,7 +11,9 @@ export function DashboardTitle() {
   const id = getIdByParams(pathname)
   return (
     <div className="mb-4">
-      <h1 className="text-2xl font-semibold">{setAdminPageTitle(pathname)}</h1>
+      <h1 className="text-2xl font-semibold">
+        {setAdminPageTitle(pathname, id)}
+      </h1>
 
       <Breadcrumb pathname={pathname} id={id} />
     </div>

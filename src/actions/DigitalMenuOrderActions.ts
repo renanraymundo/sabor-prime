@@ -3,10 +3,13 @@
 import { Order, OrderItem, Prisma } from '@prisma/client'
 
 import { prisma } from '@/lib/prisma'
+import { createDigitalMenuOrderSchema } from '@/schemas/DigitalMenuOrderSchema'
+import { sendOrderEmail } from '@/services/mail'
 
-export type CreateOrderSchema = {
+export type CreateOrderProps = {
   protocolNumber: string
   name: string
+  email: string
   address: string
   complement?: string
   whatsapp: string
@@ -15,22 +18,38 @@ export type CreateOrderSchema = {
   items: OrderItem[]
 }
 
-export async function createOrder(
-  orderData: CreateOrderSchema,
-): Promise<Order> {
+export async function createOrder(orderData: CreateOrderProps): Promise<Order> {
   try {
+    const validated = createDigitalMenuOrderSchema.safeParse(orderData)
+
+    if (!validated.success) {
+      throw new Error('Invalid data')
+    }
+
+    const {
+      protocolNumber,
+      name,
+      email,
+      address,
+      city,
+      state,
+      complement,
+      whatsapp,
+      items,
+    } = orderData
+
     const order = await prisma.order.create({
       data: {
-        protocolNumber: orderData.protocolNumber,
-        name: orderData.name,
-        address: orderData.address,
-        complement: orderData.complement,
-        whatsapp: orderData.whatsapp,
-        city: orderData.city,
-        state: orderData.state,
+        protocolNumber,
+        name,
+        email,
+        address,
+        complement,
+        whatsapp,
+        city,
+        state,
         items: {
           create: orderData.items.map((item) => ({
-            id: item.id,
             title: item.title,
             quantity: item.quantity,
             price: item.price,
@@ -38,7 +57,36 @@ export async function createOrder(
           })),
         },
       },
+      include: {
+        items: true,
+      },
     })
+
+    const to = email
+
+    await sendOrderEmail(
+      'saborprimecps@gmail.com',
+      to,
+      true,
+      protocolNumber,
+      name,
+      whatsapp,
+      address,
+      city,
+      items,
+    )
+
+    await sendOrderEmail(
+      email,
+      to,
+      false,
+      protocolNumber,
+      name,
+      whatsapp,
+      address,
+      city,
+      items,
+    )
     return order
   } catch (error) {
     console.log(error)

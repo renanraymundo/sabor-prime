@@ -46,7 +46,7 @@ export function DigitalMenuOrderStatusForm({
         classNames={{
           helperWrapper: 'p-0',
           value:
-            'text-slate-500 text-base group-data-[has-value=true]:text-slate-600',
+            'text-slate-500 text-sm group-data-[has-value=true]:text-slate-600',
         }}
         label="Status"
         placeholder="Selecionar status"
@@ -62,14 +62,14 @@ export function DigitalMenuOrderStatusForm({
         ))}
       </Select>
       <Button
-        className="mt-auto px-8 text-white disabled:!cursor-not-allowed"
+        className="mt-auto px-12 font-bold text-white disabled:!cursor-not-allowed"
         size="lg"
         color="success"
         type="submit"
         isLoading={isSubmitting}
         isDisabled={!isValid || !isDirty}
       >
-        <span className="h-5 text-white">Atualizar status</span>
+        Atualizar status
       </Button>
     </form>
   )

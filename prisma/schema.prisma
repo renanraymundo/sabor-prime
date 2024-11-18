@@ -93,6 +93,7 @@ model Order {
   id             String      @id @default(cuid())
   protocolNumber String      @map("protocol_number")
   name           String
+  email          String?
   whatsapp       String
   address        String
   complement     String?
