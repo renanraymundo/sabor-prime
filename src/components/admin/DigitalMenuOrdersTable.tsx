@@ -11,8 +11,9 @@ import {
 } from '@nextui-org/react'
 import { Order } from '@prisma/client'
 import Link from 'next/link'
-import { FiEdit, FiTrash } from 'react-icons/fi'
+import { FiEdit } from 'react-icons/fi'
 
+import { DigitalMenuOrderDelete } from './DigitalMenuOrderDelete'
 import { DigitalMenuOrderStatus } from './DIgitalMenuOrderStatus'
 
 type DigitalMenuOrdersTableProps = {
@@ -53,11 +54,7 @@ export function DigitalMenuOrdersTable({
                     <FiEdit size={16} className="text-success" />
                   </Link>
                 </Tooltip>
-                <Tooltip color="danger" content="Deletar item">
-                  <span className="cursor-pointer text-lg text-danger active:opacity-50">
-                    <FiTrash />
-                  </span>
-                </Tooltip>
+                <DigitalMenuOrderDelete id={order.id} />
               </div>
             </TableCell>
           </TableRow>

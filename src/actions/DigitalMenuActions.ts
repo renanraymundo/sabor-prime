@@ -200,3 +200,24 @@ export async function getDigitalMenus() {
     throw Error
   }
 }
+
+export async function deleteOrder(id: string) {
+  try {
+    const userId = await getAuthUserId()
+
+    if (!userId) return { status: 'error', error: 'Usuário não autorizado' }
+
+    await prisma.orderItem.deleteMany({
+      where: { orderId: id },
+    })
+
+    await prisma.order.delete({
+      where: { id },
+    })
+
+    return { status: 'success', data: 'Deleted' }
+  } catch (error) {
+    console.error('Erro ao deletar o pedido:', error)
+    return { status: 'error', error: 'Falha ao deletar o pedido' }
+  }
+}
