@@ -11,25 +11,23 @@ export function FinalizeOrder() {
   const { productsCart } = useCart()
   const [isOrderDisabled, setIsOrderDisabled] = useState<boolean>(true)
 
+  const enabledTotalPrice = productsCart
+    .map((item) => item.totalPrice)
+    .reduce((acc, curr) => acc + curr, 0)
+
   useEffect(() => {
-    const quantityItems = productsCart.map((item) => item.quantity)
     const kitItems = productsCart.some(
       (item) => item.line === 'Kits e Promoções',
     )
-    const countItems = quantityItems.reduce(
-      (acc, actualValue) => acc + actualValue,
-      0,
-    )
-
-    setIsOrderDisabled(!kitItems && countItems < 6)
-  }, [productsCart])
+    setIsOrderDisabled(!kitItems && enabledTotalPrice <= 90.0)
+  }, [productsCart, enabledTotalPrice])
 
   return (
     <>
       <div className="mt-4 flex w-full flex-col items-center space-y-2 text-center">
         <p className="text-sm font-semibold text-danger">
-          *Para finalizar seu pedido você deve escolher no mínimo 6 unidades de
-          qualquer linha e/ou 1 kit promocional.
+          *Para prosseguir com o pedido, é necessário que a compra tenha um
+          valor mínimo de R$90,00.
           <br />
           Válido enquanto durar o estoque.
         </p>

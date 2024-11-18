@@ -16,7 +16,7 @@ import { getOrderById } from '@/actions/DigitalMenuOrderActions'
 
 import { DigitalMenuOrderStatusForm } from './DigitalMenuOrderStatusForm'
 
-type OrdersWithItems = Awaited<ReturnType<typeof getOrderById>>
+export type OrdersWithItems = Awaited<ReturnType<typeof getOrderById>>
 
 type DigitalMenuOrderItemsTableProps = {
   order: OrdersWithItems
@@ -36,7 +36,7 @@ export function DigitalMenuOrderItemsTable({
     <Card>
       <CardHeader className="flex items-center justify-between pb-0 text-base font-bold text-slate-600">
         Pedido
-        <DigitalMenuOrderStatusForm status={order.status} />
+        <DigitalMenuOrderStatusForm status={order.status} order={order} />
       </CardHeader>
       <CardBody>
         <Table

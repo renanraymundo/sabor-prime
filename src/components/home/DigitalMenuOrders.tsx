@@ -79,12 +79,13 @@ export function DigitalMenuOrders() {
           })}
         </TableBody>
       </Table>
-      <div className="flex flex-col text-end">
-        <p className="font-semibold text-slate-400">Entrega a combinar.</p>
+      <div className="flex flex-col space-y-2 text-end">
+        <p className="font-semibold text-slate-400">
+          O valor mínimo para entrega é de R$90,00. (Frete a combinar)
+        </p>
         <p className="text-small leading-4 text-danger">
-          * Informamos que não solicitamos pagamentos neste site ou via
-          WhatsApp. O pagamento deverá ser realizado no ato da entrega do seu
-          kit.
+          *Informamos que não solicitamos pagamentos neste site ou via WhatsApp.
+          O pagamento deverá ser realizado no ato da entrega do seu kit.
         </p>
         <p className="text-base text-slate-500">
           Subtotal:&nbsp;

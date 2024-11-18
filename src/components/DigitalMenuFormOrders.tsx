@@ -14,6 +14,7 @@ import {
 } from '@/actions/DigitalMenuOrderActions'
 import CountryFlag from '@/app/assets/country-flag.svg'
 import { generateProtocolNumber, sleep } from '@/lib/utils'
+import { useCart } from '@/providers/CartProvider'
 import { createDigitalMenuOrderSchema } from '@/schemas/DigitalMenuOrderSchema'
 
 import { ErrorMessage } from './ErrorMessage'
@@ -26,10 +27,12 @@ export function DigitalMenuFormOrders({
 }: DigitalMenuFormOrdersProps) {
   const [phone, setPhone] = useState<string>('')
   const [isModalOpen, setModalIsOpen] = useState<boolean>(false)
+  const { clearCart } = useCart()
 
   const {
     register,
     handleSubmit,
+    reset,
     setValue,
     formState: { errors, isValid, isSubmitting },
   } = useForm<CreateOrderProps>({
@@ -108,6 +111,7 @@ export function DigitalMenuFormOrders({
       items: items.map((item: OrderItem) => ({
         id: item.id,
         title: item.title,
+        digitalMenuId: item.id,
         quantity: item.quantity,
         price: item.price,
         totalPrice: item.totalPrice,
@@ -119,6 +123,8 @@ export function DigitalMenuFormOrders({
       await createOrder(orderData)
 
       setModalIsOpen(true)
+      reset()
+      clearCart()
     } catch (error) {
       console.error('Failed to create order:', error)
     }

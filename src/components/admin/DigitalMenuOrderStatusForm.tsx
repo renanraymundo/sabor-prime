@@ -1,18 +1,29 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, Select, SelectItem } from '@nextui-org/react'
-import { useForm } from 'react-hook-form'
+'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, colors, Select, SelectItem } from '@nextui-org/react'
+import { usePathname, useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { FiX } from 'react-icons/fi'
+import { LuShieldAlert } from 'react-icons/lu'
+import { toast } from 'sonner'
+
+import { updateOrderStatus } from '@/actions/DigitalMenuOrderActions'
 import { ErrorMessage } from '@/components/ErrorMessage'
+import { getIdByParams } from '@/lib/utils'
 import {
   UpdateDigitalMenuOrderSchema,
   updateDigitalMenuOrderSchema,
 } from '@/schemas/DigitalMenuOrderSchema'
 
+import { OrdersWithItems } from './DigitalMenuOrderItemsTable'
+
 type DigitalMenuOrderStatusFormProps = UpdateDigitalMenuOrderSchema
 
 export function DigitalMenuOrderStatusForm({
   status,
-}: DigitalMenuOrderStatusFormProps) {
+  order,
+}: DigitalMenuOrderStatusFormProps & { order: OrdersWithItems }) {
   const {
     register,
     handleSubmit,
@@ -21,9 +32,47 @@ export function DigitalMenuOrderStatusForm({
     resolver: zodResolver(updateDigitalMenuOrderSchema),
     mode: 'onTouched',
   })
+  const pathname = usePathname()
+  const router = useRouter()
+  const id = getIdByParams(pathname)
 
   async function onSubmit(data: UpdateDigitalMenuOrderSchema) {
-    console.log(data)
+    const result = await updateOrderStatus(id, data.status, order)
+
+    if (result.status === 'success') {
+      toast.success('Status atualizado com sucesso', {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="ml-auto cursor-pointer text-success"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.success[500],
+          border: colors.light.success[500],
+          color: colors.white,
+        },
+      })
+      router.refresh()
+    } else {
+      toast.error(result.error as string, {
+        icon: <LuShieldAlert size={18} />,
+        action: (
+          <FiX
+            className="ml-auto cursor-pointer text-danger"
+            size={20}
+            onClick={() => toast.dismiss()}
+          />
+        ),
+        style: {
+          backgroundColor: colors.light.danger[500],
+          border: colors.light.danger[500],
+          color: colors.white,
+        },
+      })
+    }
   }
 
   const statuses = [

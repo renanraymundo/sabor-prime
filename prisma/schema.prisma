@@ -68,8 +68,9 @@ model DigitalMenu {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  lineId String? @map("line_id")
-  line   Line?   @relation("LineToDigitalMenus", fields: [lineId], references: [id])
+  lineId     String?     @map("line_id")
+  line       Line?       @relation("LineToDigitalMenus", fields: [lineId], references: [id])
+  orderItems OrderItem[]
 
   @@map("digital_menus")
 }
@@ -110,13 +111,15 @@ model Order {
 }
 
 model OrderItem {
-  id         String @id @default(cuid())
-  orderId    String @map("order_id")
-  order      Order  @relation(fields: [orderId], references: [id])
-  title      String
-  quantity   Int
-  price      Float
-  totalPrice Float  @map("total_price")
+  id            String      @id @default(cuid())
+  orderId       String      @map("order_id")
+  order         Order       @relation(fields: [orderId], references: [id])
+  digitalMenuId String      @map("digital_menu_id")
+  digitalMenu   DigitalMenu @relation(fields: [digitalMenuId], references: [id])
+  title         String
+  quantity      Int
+  price         Float
+  totalPrice    Float       @map("total_price")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
