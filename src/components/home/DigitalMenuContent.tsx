@@ -62,7 +62,7 @@ export function DigitalMenuContent({ items }: DigitalMenuContentProps) {
       }}
     >
       {Object.entries(groupedItems)
-        .sort(([a], [b]) => a.localeCompare(b))
+        .sort(([a], [b]) => b.localeCompare(a))
         .map(([lineTitle, categoryItems]) => {
           return (
             <Tab key={lineTitle} title={`${lineTitle}`}>

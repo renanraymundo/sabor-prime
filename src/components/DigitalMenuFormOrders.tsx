@@ -10,11 +10,10 @@ import { FaArrowLeftLong, FaArrowRightLong } from 'react-icons/fa6'
 
 import {
   createOrder,
-  CreateOrderSchema,
+  CreateOrderProps,
 } from '@/actions/DigitalMenuOrderActions'
 import CountryFlag from '@/app/assets/country-flag.svg'
-import { ultraMessage } from '@/lib/ultraMessage'
-import { formatPhoneNumber, generateProtocolNumber, sleep } from '@/lib/utils'
+import { generateProtocolNumber, sleep } from '@/lib/utils'
 import { createDigitalMenuOrderSchema } from '@/schemas/DigitalMenuOrderSchema'
 
 import { ErrorMessage } from './ErrorMessage'
@@ -33,7 +32,7 @@ export function DigitalMenuFormOrders({
     handleSubmit,
     setValue,
     formState: { errors, isValid, isSubmitting },
-  } = useForm<CreateOrderSchema>({
+  } = useForm<CreateOrderProps>({
     resolver: zodResolver(createDigitalMenuOrderSchema),
     mode: 'onTouched',
   })
@@ -88,7 +87,7 @@ export function DigitalMenuFormOrders({
     { id: '26', value: 'TO' },
   ]
 
-  async function onSubmit(data: CreateOrderSchema) {
+  async function onSubmit(data: CreateOrderProps) {
     const productsCart = localStorage.getItem('productsCart')
     const items = productsCart ? JSON.parse(productsCart) : []
 
@@ -100,6 +99,7 @@ export function DigitalMenuFormOrders({
     const orderData = {
       protocolNumber: generateProtocolNumber(),
       name: data.name,
+      email: data.email,
       address: data.address,
       complement: data.complement,
       whatsapp: formattedWhatsApp,
@@ -117,26 +117,6 @@ export function DigitalMenuFormOrders({
     try {
       await sleep(3000)
       await createOrder(orderData)
-
-      const { protocolNumber, name, whatsapp, items } = orderData
-
-      await ultraMessage(
-        true,
-        protocolNumber,
-        '+5519993035607',
-        name,
-        whatsapp,
-        items,
-      )
-
-      await ultraMessage(
-        false,
-        protocolNumber,
-        formatPhoneNumber(whatsapp),
-        name,
-        whatsapp,
-        items,
-      )
 
       setModalIsOpen(true)
     } catch (error) {
@@ -200,6 +180,24 @@ export function DigitalMenuFormOrders({
               errorMessage={<ErrorMessage message={errors.whatsapp?.message} />}
             />
           </div>
+          <Input
+            isRequired
+            defaultValue=""
+            type="email"
+            label="E-mail"
+            placeholder="Insira seu e-mail"
+            size="sm"
+            variant="bordered"
+            color="primary"
+            classNames={{
+              input:
+                'text-slate-600 placeholder:text-slate-300 placeholder:text-sm text-sm',
+            }}
+            onClear={() => console.log('input cleared')}
+            {...register('email')}
+            isInvalid={!!errors.email}
+            errorMessage={<ErrorMessage message={errors.email?.message} />}
+          />
           <div className="grid grid-cols-[1fr_11rem] gap-3">
             <Input
               isRequired

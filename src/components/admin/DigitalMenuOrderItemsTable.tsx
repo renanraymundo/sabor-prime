@@ -34,7 +34,7 @@ export function DigitalMenuOrderItemsTable({
 
   return (
     <Card>
-      <CardHeader className="flex items-center justify-between pb-0 text-xl text-slate-600">
+      <CardHeader className="flex items-center justify-between pb-0 text-base font-bold text-slate-600">
         Pedido
         <DigitalMenuOrderStatusForm status={order.status} />
       </CardHeader>
@@ -42,8 +42,8 @@ export function DigitalMenuOrderItemsTable({
         <Table
           aria-label="Tabla de pedidos"
           classNames={{
-            th: 'bg-primary text-white font-normal text-base border-white border-r',
-            td: 'text-slate-500 text-base [&:last-child]:text-primary',
+            th: 'bg-primary text-white font-semibold text-base border-white border-r',
+            td: 'text-slate-500 text-sm [&:last-child]:text-primary',
             wrapper: ' shadow-none bg-slate-50',
           }}
         >
@@ -72,8 +72,10 @@ export function DigitalMenuOrderItemsTable({
         </Table>
 
         <p className="mt-2 text-end text-base text-slate-500">
-          SubTotal:{' '}
-          <span className="text-2xl text-secondary">R$ {subTotal}</span>
+          SubTotal:&nbsp;
+          <span className="text-2xl font-bold text-secondary">
+            R$ {subTotal}
+          </span>
         </p>
       </CardBody>
     </Card>

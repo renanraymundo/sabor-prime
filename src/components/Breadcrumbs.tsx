@@ -1,13 +1,14 @@
 'use client'
 
 import { cn } from '@nextui-org/react'
-import { DigitalMenu, Line } from '@prisma/client'
+import { DigitalMenu, Line, Order } from '@prisma/client'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { FiChevronRight } from 'react-icons/fi'
 
 import { getDigitalMenuById } from '@/actions/DigitalMenuActions'
 import { getLineById } from '@/actions/DigitalMenuLineActions'
+import { getOrderById } from '@/actions/DigitalMenuOrderActions'
 
 interface BreadcrumbProps {
   paths: { path: string; name: string | undefined }[]
@@ -21,6 +22,7 @@ interface PathnameProps {
 export function Breadcrumb({ pathname, id }: PathnameProps) {
   const [isDigitalMenu, setIsDigitalMenu] = useState<DigitalMenu | null>(null)
   const [isLine, setIsLine] = useState<Line | null>()
+  const [isOrder, setIsOrder] = useState<Order | null>()
 
   useEffect(() => {
     const fetchDigitalMenu = async () => {
@@ -36,6 +38,13 @@ export function Breadcrumb({ pathname, id }: PathnameProps) {
     }
 
     fetchLine()
+
+    const fetchOrder = async () => {
+      const fetchedOrder = await getOrderById(id)
+      setIsOrder(fetchedOrder)
+    }
+
+    fetchOrder()
   }, [id])
 
   const items: BreadcrumbProps[] = [
@@ -51,6 +60,7 @@ export function Breadcrumb({ pathname, id }: PathnameProps) {
         { path: '/dashboard/lines/create', name: 'Adicionar nova' },
         { path: `/dashboard/lines/${id}`, name: isLine?.title },
         { path: '/dashboard/orders', name: 'Pedidos' },
+        { path: `/dashboard/orders/${id}`, name: isOrder?.protocolNumber },
       ],
     },
   ]

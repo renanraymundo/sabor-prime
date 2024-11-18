@@ -5,6 +5,9 @@ export const createDigitalMenuOrderSchema = z.object({
     .string()
     .min(1, { message: 'Preencha seu nome completo' })
     .regex(/^[\wÀ-ÿ]+\s+[\wÀ-ÿ]+/, { message: 'Insira um sobrenome' }),
+  email: z.string().min(1, { message: 'Preencha seu e-mail' }).email({
+    message: 'E-mail inválido',
+  }),
   whatsapp: z
     .string()
     .min(1, { message: 'Preencha seu WhatsApp' })
